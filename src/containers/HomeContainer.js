@@ -1,13 +1,15 @@
 import React from 'react';
-import Home from '../components/Home/Home';
+import Main from '../components/Main';
 import HeaderContainer from './HeaderContainer';
+import LnbContainer from './LnbContainer';
 
 const HomeContainer = props => {
   const { history } = props;
   return (
     <>
       <HeaderContainer history={history}/>
-      <Home />
+      <LnbContainer />
+      <Main />
     </>
   );
 };

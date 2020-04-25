@@ -1,5 +1,5 @@
 import axios from 'axios';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 
 import firebaseConfig from '../config/firebase';
 import { getUser, deleteUser } from '../actions/index';

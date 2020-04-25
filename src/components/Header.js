@@ -1,10 +1,11 @@
 import React from 'react';
+import Button from './Items/Button';
 
 const Header = (props) => {
   const { handleLogin, handleLogout, dispatch, user, history } = props;
 
   return (
-    <div className="App">
+    <header>
       {
         user && user.isLogin
           ? <p>{user.name} 님</p>
@@ -12,14 +13,16 @@ const Header = (props) => {
       }
       {
         user && user.isLogin
-          ? <button onClick={() => {
+          ? <Button onClick={() => {
               handleLogout(dispatch);
-              history.push('/');}}>
-                Logout
-            </button>
-          : <button onClick={() => handleLogin(dispatch)}>Login</button>
+              history.push('/');
+            }}>
+              Logout
+            </Button>
+          : <Button blueLine blueText onClick={() => handleLogin(dispatch)}>로그인</Button>
       }
-    </div>
+      <Button gray>fail</Button>
+    </header>
   );
 };
 

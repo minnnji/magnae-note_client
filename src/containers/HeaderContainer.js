@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import { handleLogin, handleLogout } from '../lib/api';
 
 const HeaderContainer = props => {

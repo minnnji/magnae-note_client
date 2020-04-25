@@ -2,7 +2,7 @@ import axios from 'axios';
 import firebase from 'firebase';
 
 import firebaseConfig from '../config/firebase';
-import { getUser, deleteUser } from '../actions/index';
+import { getUser, deleteUser, setNewMeeting } from '../actions/index';
 import message from '../constants/messages';
 
 const setHeader = (jwtToken)=> {
@@ -20,10 +20,11 @@ export const handleLogin = async dispatch => {
   try {
     const { user } = await firebase.auth().signInWithPopup(provider);
     const { email, displayName } = user;
-    const response = await axios.post('http://localhost:4000/api/auth/login', { email, name: displayName });
+    const authResult = await axios.post('http://localhost:4000/api/auth/login', { email, name: displayName });
+    const userInfo = authResult.data.payload
 
-    setHeader(response.data.jwtToken);
-    dispatch(getUser(email, displayName));
+    setHeader(authResult.data.jwtToken);
+    dispatch(getUser(userInfo.email, userInfo.name, userInfo._id));
   } catch (err) {
     alert(message.loginError);
     console.warn(err);
@@ -33,4 +34,14 @@ export const handleLogin = async dispatch => {
 export const handleLogout = async dispatch => {
   setHeader();
   dispatch(deleteUser());
-}
+};
+
+export const createNewMeeting = async (title, password, user_id, name, dispatch) => {
+  const newMeeting = await axios.post('http://localhost:4000/api/meetings',
+    { title,
+      password,
+      creator: user_id
+    });
+  dispatch(setNewMeeting(title, name));
+  console.log(newMeeting);
+};

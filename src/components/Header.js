@@ -21,7 +21,6 @@ const Header = (props) => {
             </Button>
           : <Button blueLine blueText onClick={() => handleLogin(dispatch)}>로그인</Button>
       }
-      <Button gray>fail</Button>
     </header>
   );
 };

@@ -4,13 +4,15 @@
   "main": "src/main.js",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "electron-is-dev": "^1.2.0",
+    "firebase": "^7.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -38,8 +40,8 @@
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
-    "electron": "^8.2.3",
     "cross-env": "^7.0.2",
+    "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
     "wait-on": "^4.0.2"
   }

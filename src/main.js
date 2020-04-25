@@ -1,19 +1,24 @@
 exports.__esModule = true;
 
-const electron_1 = require("electron");
+require('dotenv').config();
+const { app, BrowserWindow } = require('electron');
+
 const isDev = require("electron-is-dev");
 const path = require("path");
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new electron_1.BrowserWindow({
+  mainWindow = new BrowserWindow({
+    title: 're-meeting',
     width: 1000,
     height: 800,
     center: true,
-    // fullscreen: true,
+    fullscreen: true,
     kiosk: !isDev,
     resizable: true,
     webPreferences: {
+      nativeWindowOpen: true,
+      webSecurity: false,
       nodeIntegration: true
     }
   });
@@ -30,15 +35,13 @@ function createWindow() {
   });
 }
 
-electron_1.app.on('ready', createWindow);
+app.on('ready', createWindow);
 
-electron_1.app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        electron_1.app.quit();
-    }
+app.on('window-all-closed', function () {
+  app.quit();
 });
 
-electron_1.app.on('activate', function () {
+app.on('activate', function () {
     if (mainWindow === null) {
         createWindow();
     }

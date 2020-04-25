@@ -1,22 +1,23 @@
 import React from 'react';
 
 const Header = (props) => {
-  const { handleLogin, handleLogout, user, history } = props;
+  const { handleLogin, handleLogout, dispatch, user, history } = props;
 
   return (
     <div className="App">
       {
-        user
-          ? <p>{user} 님</p>
+        user && user.isLogin
+          ? <p>{user.name} 님</p>
           : <p>로그인 후 이용해주세요.</p>
       }
       {
-        user
+        user && user.isLogin
           ? <button onClick={() => {
-              handleLogout();
-            history.push('/');}
-          }>Logout</button>
-          : <button onClick={handleLogin}>Login</button>
+              handleLogout(dispatch);
+              history.push('/');}}>
+                Logout
+            </button>
+          : <button onClick={() => handleLogin(dispatch)}>Login</button>
       }
     </div>
   );

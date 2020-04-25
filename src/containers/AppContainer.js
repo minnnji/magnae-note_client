@@ -1,19 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import App from '../components/App/App';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import HomeContainer from './HomeContainer';
 
 const AppContainer = props => {
   return (
-    <App />
+    <Switch>
+      <Route exact path="/" render={props => <HomeContainer {...props} />} />
+      <Route render={() => <Redirect to="/" />} />
+    </Switch>
   );
 };
 
-const mapStateToProps = state => {
-
-};
-
-const mapDispatchToProps = dispatch => {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default AppContainer;

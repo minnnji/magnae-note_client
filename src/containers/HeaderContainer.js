@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
-// import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header/Header';
 import { handleLogin, handleLogout } from '../lib/api';
 
 const HeaderContainer = props => {
+  const { history } = props;
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+
   return (
-    <Header handleLogin={handleLogin} handleLogout={handleLogout}/>
+    <Header
+      history={history}
+      user={user}
+      handleLogin={handleLogin}
+      handleLogout={handleLogout}
+      dispatch={dispatch} />
   );
 };
-
-const mapStateToProps = state => {
-
-};
-
-const mapDispatchToProps = dispatch => {
-
-};
-
-// export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);
 
 export default HeaderContainer;

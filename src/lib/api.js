@@ -5,12 +5,12 @@ import firebaseConfig from '../config/firebase';
 import { getUser, deleteUser, setNewMeeting } from '../actions/index';
 import message from '../constants/messages';
 
-const setHeader = (jwtToken)=> {
+const setHeader = jwtToken => {
   if (jwtToken) {
-    return axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
+    return axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
   }
 
-  delete axios.defaults.headers.common['Authorization'];
+  delete axios.defaults.headers.common.Authorization;
 };
 
 export const handleLogin = async dispatch => {
@@ -21,7 +21,7 @@ export const handleLogin = async dispatch => {
     const { user } = await firebase.auth().signInWithPopup(provider);
     const { email, displayName } = user;
     const authResult = await axios.post('http://localhost:4000/api/auth/login', { email, name: displayName });
-    const userInfo = authResult.data.payload
+    const userInfo = authResult.data.payload;
 
     setHeader(authResult.data.jwtToken);
     dispatch(getUser(userInfo.email, userInfo.name, userInfo._id));

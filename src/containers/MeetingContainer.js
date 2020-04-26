@@ -9,9 +9,9 @@ const MeetingContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history}/>
+      <HeaderContainer history={history} />
       <MeetingSideBar />
-      <Meeting />
+      <Meeting {...props} />
     </>
   );
 };

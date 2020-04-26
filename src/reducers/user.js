@@ -22,7 +22,7 @@ const user = (state = initialState, action) => {
         ...state,
         _id: '',
         name: '',
-        email:'',
+        email: '',
         isLogin: false
       };
     default: return state;

@@ -1,0 +1,61 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": "airbnb",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "plugins": ["react", "jsx-a11y", "import"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "react/prop-types": 0, // 지우기
+    "camelcase": 0, // 지우기
+    "no-console": 0, // 지우기
+    "no-unused-vars": 0, // 지우기
+    "no-static-element-interactions": 0,
+    "no-undef": 0,
+    "no-underscore-dangle": 0,
+    "func-names": 0,
+    "no-plusplus": 0,
+    "consistent-return": 0,
+    "object-curly-newline": 0,
+    "no-restricted-globals": 0,
+    "no-array-index-key": 0,
+    "react/jsx-filename-extension": 0,
+    "eslint(jsx-quotes)": 0,
+    "no-alert": 0,
+    "no-use-before-define": 0,
+    "react/jsx-props-no-spreading": 0,
+    "one-var": 0,
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ]
+  }
+}

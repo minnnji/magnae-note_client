@@ -7,6 +7,6 @@ const theme = {
   BG_COLOR_3: '#303030',
   BG_COLOR_4: '#202020',
   BG_COLOR_5: '#171717'
-}
+};
 
 export default theme;

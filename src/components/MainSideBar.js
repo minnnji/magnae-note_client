@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Items/Button';
 
-const MainSideBar = (props) => {
+const MainSideBar = props => {
   const { setModeNew, setModeJoin, dispatch } = props;
   return (
     <nav>

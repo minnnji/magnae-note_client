@@ -11,7 +11,8 @@ const MainSideBarContainer = props => {
       <MainSideBar
         setModeNew={setModeNew}
         setModeJoin={setModeJoin}
-        dispatch={dispatch} />
+        dispatch={dispatch}
+      />
     </>
   );
 };

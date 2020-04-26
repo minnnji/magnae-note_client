@@ -3,8 +3,9 @@ exports.__esModule = true;
 require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
 
-const isDev = require("electron-is-dev");
-const path = require("path");
+const isDev = require('electron-is-dev');
+const path = require('path');
+
 let mainWindow;
 
 function createWindow() {
@@ -30,19 +31,19 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
   }
 
-  mainWindow.on('closed', function () {
+  mainWindow.on('closed', () => {
     mainWindow = undefined;
   });
 }
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   app.quit();
 });
 
-app.on('activate', function () {
-    if (mainWindow === null) {
-        createWindow();
-    }
+app.on('activate', () => {
+  if (mainWindow === null) {
+    createWindow();
+  }
 });

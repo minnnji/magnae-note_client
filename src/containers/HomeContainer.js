@@ -14,7 +14,7 @@ const HomeContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history}/>
+      <HeaderContainer history={history} />
       <MainSideBarContainer />
       <Main
         mode={mode}
@@ -23,7 +23,8 @@ const HomeContainer = props => {
         createNewMeeting={createNewMeeting}
         dispatch={dispatch}
         history={history}
-        location={location}/>
+        location={location}
+      />
     </>
   );
 };

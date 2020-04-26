@@ -14,7 +14,8 @@ const HeaderContainer = props => {
       user={user}
       handleLogin={handleLogin}
       handleLogout={handleLogout}
-      dispatch={dispatch} />
+      dispatch={dispatch}
+    />
   );
 };
 

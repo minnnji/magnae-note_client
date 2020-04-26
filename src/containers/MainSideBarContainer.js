@@ -1,14 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setModeNew, setModeJoin } from '../actions/index';
-import Lnb from '../components/Lnb';
+import MainSideBar from '../components/MainSideBar';
 
-const LnbContainer = props => {
+const MainSideBarContainer = props => {
   const dispatch = useDispatch();
 
   return (
     <>
-      <Lnb
+      <MainSideBar
         setModeNew={setModeNew}
         setModeJoin={setModeJoin}
         dispatch={dispatch} />
@@ -16,4 +16,4 @@ const LnbContainer = props => {
   );
 };
 
-export default LnbContainer;
+export default MainSideBarContainer;

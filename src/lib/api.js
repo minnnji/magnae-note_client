@@ -43,5 +43,5 @@ export const createNewMeeting = async (title, password, user_id, name, dispatch)
       creator: user_id
     });
   dispatch(setNewMeeting(title, name));
-  console.log(newMeeting);
+  return newMeeting.data.meetingId;
 };

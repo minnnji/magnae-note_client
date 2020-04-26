@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from './Items/Button';
 
 const Main = (props) => {
-  const { mode, user_id, name, createNewMeeting, dispatch } = props;
+  const { mode, user_id, name, createNewMeeting, dispatch, history } = props;
   const [title, setTitle] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,7 +22,12 @@ const Main = (props) => {
         defaultValue={password}
         onChange={e => setPassword(e.target.value)}/>
       {mode === 'new'
-        ? <Button onClick={() => createNewMeeting(title, password, user_id, name, dispatch)}>완료</Button>
+        ? <Button onClick={async () => {
+            const meetingId = await createNewMeeting(title, password, user_id, name, dispatch);
+            history.push(`/meeting/${meetingId}`);
+          }}>
+            완료
+          </Button>
         : <Button>들어가기</Button>}
     </main>
   );

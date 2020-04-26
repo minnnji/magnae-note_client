@@ -20,15 +20,22 @@ const GlobalStyle = createGlobalStyle`
                         "nav    main"
                         "nav    main";
   }
+
   header {
     grid-area: header;
     background-color: ${theme.BG_COLOR_4};
   }
+
   nav {
+    display: grid;
+    grid-template-rows: 15em;
     grid-area: nav;
     background-color: ${theme.BG_COLOR_3};
   }
+
   main {
+    display: grid;
+    grid-template-columns: 48em 20em;
     grid-area: main;
     background-color: ${theme.BG_COLOR_5};
   }

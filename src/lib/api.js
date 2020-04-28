@@ -50,7 +50,6 @@ export const joinMeetingApi = async (title, password, name, dispatch) => {
   try {
     const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation',
       { title, password });
-    console.log(meetingRes.data.meetingInfo._id);
 
     dispatch(joinMeeting(meetingRes.data.meetingInfo, name));
     return meetingRes.data.meetingInfo;

@@ -6,10 +6,8 @@ const Video = styled.video`
 `;
 
 const MeetingSideBar = props => {
-  const [stream, setStream] = useState();
-
+  const { setStream } = props;
   const userVideo = useRef();
-  const partnerVideo = useRef();
 
   useEffect(() => {
     navigator.getWebcam = (navigator.getUserMedia

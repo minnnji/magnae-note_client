@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import styled from 'styled-components';
 
-const Meeting = (props) => {
+const Video = styled.video`
+  width: 100%;
+`;
+
+const Meeting = props => {
+  const { peerStream } = props;
+  const peerVideo = useRef();
+
+  if (peerStream && peerVideo.current) {
+    peerVideo.current.srcObject = peerStream;
+  }
+
   return (
     <main>
       <div>
-        영상
+        <Video playsInline muted ref={peerVideo} autoPlay />
       </div>
       <div>
         스크립트

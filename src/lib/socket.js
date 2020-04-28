@@ -9,27 +9,58 @@ export const connectSocket = () => {
   socket = io('https://localhost:4000');
 };
 
+// TO DO
 export const disconnectSocket = () => {
   console.log('disconnect!');
   socket.emit('disconnect');
   socket.off();
 };
 
-export const socketSubscribe = async (user, dispatch) => {
+export const socketSubscribe = async (user, stream, dispatch, setPeerStream) => {
   socket.on('message', message => {
-    console.log(message);
     dispatch(action.receiveNotice(message));
+  });
+
+  socket.on('peerCallToCreator', data => {
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream
+    });
+    peer.on('signal', data => {
+      socket.emit('creatorCall', {
+        signal: data,
+        to: data.from
+      });
+    });
+    peer.on('stream', stream => {
+      setPeerStream(stream);
+    });
+    peer.signal(data.signal);
   });
 };
 
-export const handleCreate = (name, roomId) => {
+export const handleCreateRoom = (name, roomId) => {
   socket.emit('createRoom', name, roomId);
 };
 
-export const joinMeeting = (name, roomId, stream, dispatch) => {
+export const handleJoinRoom = (name, roomId, stream, dispatch, setPeerStream) => {
   const peer = new Peer({
-    initiator: false,
+    initiator: true,
     stream
   });
-  socket.emit('join', name, roomId);
+  peer.on('signal', data => {
+    socket.emit('peerCall', {
+      from: socket.id,
+      roomId,
+      signalData: data
+    });
+  });
+  peer.on('stream', stream => {
+    setPeerStream(stream);
+  });
+
+  socket.on('callAccepted', signal => {
+    peer.signal(signal);
+  });
 };

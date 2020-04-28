@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import queryString from 'query-string';
-import socketio from 'socket.io-client';
-import { connectSocket, disconnectSocket, socketSubscribe, handleCreate } from '../lib/socket';
+import * as socket from '../lib/socket';
 import Meeting from '../components/Meeting';
 import HeaderContainer from './HeaderContainer';
 import MeetingSideBar from '../components/MeetingSideBar';
@@ -14,24 +13,25 @@ const MeetingContainer = props => {
   const user = useSelector(state => state.user);
   const mode = useSelector(state => state.mode.mode);
   const dispatch = useDispatch();
+  const [stream, setStream] = useState('');
+  const [peerStream, setPeerStream] = useState('');
 
   useEffect(() => {
-    connectSocket();
-    socketSubscribe(user, dispatch);
-    if (mode === 'new') {
-      handleCreate(user.name, meetingId);
-    }
-    return () => disconnectSocket();
+    socket.connectSocket();
+    socket.socketSubscribe(user, stream, dispatch, setPeerStream);
+    return () => socket.disconnectSocket();
   }, []);
-  useEffect(() => {
 
-  });
+  useEffect(() => {
+    if (mode === 'new') socket.handleCreateRoom(user.name, meetingId);
+    if (stream && mode === 'join') socket.handleJoinRoom(user.name, meetingId, stream, dispatch, setPeerStream);
+  }, [stream]);
 
   return (
     <>
       <HeaderContainer history={history} />
-      <MeetingSideBar />
-      <Meeting {...props} />
+      <MeetingSideBar setStream={setStream} />
+      <Meeting myStream={stream} peerStream={peerStream} />
     </>
   );
 };

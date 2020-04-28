@@ -3,6 +3,8 @@ exports.__esModule = true;
 require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
 
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
 const isDev = require('electron-is-dev');
 const path = require('path');
 
@@ -25,7 +27,7 @@ function createWindow() {
   });
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.loadURL('https://localhost:3000');
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));

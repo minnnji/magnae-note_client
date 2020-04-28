@@ -5,10 +5,13 @@
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "electron": "^8.2.3",
     "electron-is-dev": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "firebase": "^7.14.1",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -27,7 +30,7 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on https://localhost:3000 && electron .\"",
     "build": "yarn react-build && electron-builder",
     "release": "yarn react-build && electron-builder --publish=always"
   },
@@ -52,7 +55,6 @@
   "devDependencies": {
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
-    "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
     "wait-on": "^4.0.2"
   }

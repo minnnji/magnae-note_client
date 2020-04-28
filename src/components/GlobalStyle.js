@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     display: grid;
     grid-template-rows: 50px 100vh;
-    grid-template-columns: minmax(200px, 3fr) 9fr;
+    grid-template-columns: minmax(250px, 3fr) 9fr;
     grid-template-areas: "header header"
                         "nav    main"
                         "nav    main";

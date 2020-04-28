@@ -2,7 +2,7 @@ import axios from 'axios';
 import firebase from 'firebase';
 
 import firebaseConfig from '../config/firebase';
-import { getUser, deleteUser, setNewMeeting } from '../actions/index';
+import { getUser, deleteUser, createMeeting, joinMeeting } from '../actions/index';
 import message from '../constants/messages';
 
 const setHeader = jwtToken => {
@@ -20,7 +20,7 @@ export const handleLogin = async dispatch => {
   try {
     const { user } = await firebase.auth().signInWithPopup(provider);
     const { email, displayName } = user;
-    const authResult = await axios.post('http://localhost:4000/api/auth/login', { email, name: displayName });
+    const authResult = await axios.post('https://localhost:4000/api/auth/login', { email, name: displayName });
     const userInfo = authResult.data.payload;
 
     setHeader(authResult.data.jwtToken);
@@ -37,11 +37,24 @@ export const handleLogout = async dispatch => {
 };
 
 export const createNewMeeting = async (title, password, user_id, name, dispatch) => {
-  const newMeeting = await axios.post('http://localhost:4000/api/meetings',
+  const newMeeting = await axios.post('https://localhost:4000/api/meetings',
     { title,
       password,
-      creator: user_id
-    });
-  dispatch(setNewMeeting(title, name));
+      creator: user_id });
+
+  dispatch(createMeeting(newMeeting.data.meetingId, title, name));
   return newMeeting.data.meetingId;
+};
+
+export const joinMeetingApi = async (title, password, name, dispatch) => {
+  try {
+    const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation',
+      { title, password });
+    console.log(meetingRes.data.meetingInfo._id);
+
+    dispatch(joinMeeting(meetingRes.data.meetingInfo, name));
+    return meetingRes.data.meetingInfo;
+  } catch (err) {
+    alert(err.response.data.message);
+  }
 };

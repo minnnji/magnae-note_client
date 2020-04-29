@@ -14,17 +14,23 @@ const MeetingContainer = props => {
   const mode = useSelector(state => state.mode.mode);
   const dispatch = useDispatch();
   const [stream, setStream] = useState('');
+  const [caller, setCaller] = useState('');
   const [peerStream, setPeerStream] = useState('');
+  const [callerSignal, setCallerSignal] = useState('');
+  const [receivingCall, setreceivingCall] = useState(false);
+  const [callAccepted, setCallAccepted] = useState(false);
 
   useEffect(() => {
-    socket.connectSocket();
-    socket.socketSubscribe(user, stream, dispatch, setPeerStream);
-    return () => socket.disconnectSocket();
-  }, []);
+    if (stream) {
+      (async () => {
+        await socket.connectSocket();
+        await socket.socketSubscribe(stream, dispatch, setPeerStream, setreceivingCall, setCaller, setCallerSignal, setCallAccepted, caller, callerSignal);
+        if (mode === 'new') socket.handleCreateRoom(user.name, meetingId);
+        if (stream && mode === 'join') socket.handleJoinRoom(meetingId, setPeerStream, setCallAccepted);
 
-  useEffect(() => {
-    if (mode === 'new') socket.handleCreateRoom(user.name, meetingId);
-    if (stream && mode === 'join') socket.handleJoinRoom(user.name, meetingId, stream, dispatch, setPeerStream);
+        return () => socket.disconnectSocket();
+      })();
+    }
   }, [stream]);
 
   return (

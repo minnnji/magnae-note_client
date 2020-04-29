@@ -3,6 +3,7 @@ import Peer from 'simple-peer';
 import * as action from '../actions/index';
 
 let socket;
+let myStream;
 
 export const connectSocket = () => {
   console.log('connect!');
@@ -16,27 +17,18 @@ export const disconnectSocket = () => {
   socket.off();
 };
 
-export const socketSubscribe = async (user, stream, dispatch, setPeerStream) => {
+export const socketSubscribe = async (stream, dispatch, setPeerStream, setreceivingCall, setCaller, setCallerSignal, setCallAccepted, caller, callerSignal) => {
+  myStream = stream;
+  console.log('my stream is', myStream);
   socket.on('message', message => {
     dispatch(action.receiveNotice(message));
   });
 
-  socket.on('peerCallToCreator', data => {
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream
-    });
-    peer.on('signal', data => {
-      socket.emit('creatorCall', {
-        signal: data,
-        to: data.from
-      });
-    });
-    peer.on('stream', stream => {
-      setPeerStream(stream);
-    });
-    peer.signal(data.signal);
+  socket.on('hey', data => {
+    setreceivingCall(true);
+    setCaller(data.from);
+    setCallerSignal(data.signal);
+    acceptCall(setCallAccepted, data.from, setPeerStream, data.signal);
   });
 };
 
@@ -44,23 +36,47 @@ export const handleCreateRoom = (name, roomId) => {
   socket.emit('createRoom', name, roomId);
 };
 
-export const handleJoinRoom = (name, roomId, stream, dispatch, setPeerStream) => {
+export const handleJoinRoom = (roomId, setPeerStream, setCallAccepted) => {
+  console.log('peer stream is', myStream);
   const peer = new Peer({
     initiator: true,
-    stream
+    trickle: false,
+    stream: myStream,
+    debug: 3
   });
   peer.on('signal', data => {
-    socket.emit('peerCall', {
-      from: socket.id,
+    socket.emit('callUser', {
       roomId,
-      signalData: data
+      signalData: data,
+      from: socket.id
     });
   });
-  peer.on('stream', stream => {
-    setPeerStream(stream);
+  peer.on('stream', str => {
+    setPeerStream(str);
   });
 
   socket.on('callAccepted', signal => {
+    setCallAccepted(true);
     peer.signal(signal);
   });
+};
+
+const acceptCall = (setCallAccepted, caller, setPeerStream, callerSignal) => {
+  setCallAccepted(true);
+  const peer = new Peer({
+    initiator: true,
+    trickle: false,
+    stream: myStream,
+    debug: 3
+  });
+  peer.on('signal', data => {
+    socket.emit('acceptCall', {
+      signal: data,
+      to: caller
+    });
+  });
+  peer.on('stream', str => {
+    setPeerStream(str);
+  });
+  peer.signal(callerSignal);
 };

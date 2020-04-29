@@ -16,7 +16,7 @@ const Meeting = props => {
   return (
     <main>
       <div>
-        <Video playsInline muted ref={peerVideo} autoPlay />
+        <Video playsInline ref={peerVideo} autoPlay />
       </div>
       <div>
         스크립트

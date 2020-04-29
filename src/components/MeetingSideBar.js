@@ -10,31 +10,34 @@ const MeetingSideBar = props => {
   const userVideo = useRef();
 
   useEffect(() => {
-    navigator.getWebcam = (navigator.getUserMedia
-      || navigator.webKitGetUserMedia
-      || navigator.moxGetUserMedia
-      || navigator.mozGetUserMedia
-      || navigator.msGetUserMedia);
-
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-        .then(stream => {
+    (async () => {
+      navigator.getWebcam = (navigator.getUserMedia
+        || navigator.webKitGetUserMedia
+        || navigator.moxGetUserMedia
+        || navigator.mozGetUserMedia
+        || navigator.msGetUserMedia);
+      if (navigator.mediaDevices.getUserMedia) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
           setStream(stream);
           if (userVideo.current) {
             userVideo.current.srcObject = stream;
           }
-        })
-        .catch(e => { console.log(`${e.name}: ${e.message}`); });
-    } else {
-      navigator.getWebcam({ audio: true, video: true },
-        stream => {
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          const stream = await navigator.getWebcam({ audio: true, video: true });
           setStream(stream);
           if (userVideo.current) {
             userVideo.current.srcObject = stream;
           }
-        },
-        () => { console.log('Web cam is not accessible.'); });
-    }
+        } catch (err) {
+          console.log('Web cam is not accessible.');
+        }
+      }
+    })();
   }, []);
 
   return (

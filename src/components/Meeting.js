@@ -8,6 +8,7 @@ const Video = styled.video`
 const Meeting = props => {
   const { peerStream } = props;
   const peerVideo = useRef();
+  console.log('Meeting comp:', peerStream);
 
   if (peerStream && peerVideo.current) {
     peerVideo.current.srcObject = peerStream;
@@ -15,6 +16,7 @@ const Meeting = props => {
 
   return (
     <main>
+      { !peerStream && 'Loading..' }
       <div>
         <Video playsInline ref={peerVideo} autoPlay />
       </div>

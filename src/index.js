@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
@@ -11,8 +12,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import rootReducer from './reducers/index';
 import AppContainer from './containers/AppContainer';
 
+dotenv.config();
 const middleware = [];
-
 const persistConfig = {
   key: 'root',
   storage,
@@ -24,6 +25,7 @@ const persistConfig = {
   ]
 };
 
+console.log(process.env.APIKEY);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 if (process.env.NODE_ENV !== 'production') {

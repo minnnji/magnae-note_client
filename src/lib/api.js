@@ -24,6 +24,7 @@ export const handleLogin = async dispatch => {
     const userInfo = authResult.data.payload;
 
     setHeader(authResult.data.jwtToken);
+    console.log(authResult.data.jwtToken);
     dispatch(getUser(userInfo.email, userInfo.name, userInfo._id));
   } catch (err) {
     alert(message.loginError);

@@ -1,3 +1,13 @@
+// export default {
+//   apiKey: process.env.APIKEY,
+//   authDomain: 're-meeting.firebaseapp.com',
+//   databaseURL: process.env.DATABASEURL,
+//   projectId: 're-meeting',
+//   storageBucket: 're-meeting.appspot.com',
+//   messagingSenderId: process.env.SENDERID,
+//   appId: process.env.APPID
+// };
+
 export default {
   apiKey: 'AIzaSyBMh9vEFuSP-j8C8iWGTD5Pv8GKRmsACqE',
   authDomain: 're-meeting.firebaseapp.com',

@@ -1,24 +1,75 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
+const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 const Video = styled.video`
   width: 100%;
 `;
 
 const Meeting = props => {
-  const { peerStream } = props;
-  const peerVideo = useRef();
-  console.log('Meeting comp:', peerStream);
+  const {
+    mySocket,
+    isHost,
+    receivingCall,
+    callerName,
+    partnerPeerInfo,
+    partnerVideo,
+    callAccepted,
+    acceptCall,
+    callPeer
+  } = props;
 
-  if (peerStream && peerVideo.current) {
-    peerVideo.current.srcObject = peerStream;
+  let PartnerVideo;
+  if (callAccepted) {
+    PartnerVideo = (
+      <Video playsInline ref={partnerVideo} autoPlay />
+    );
+  }
+
+  let incomingCall;
+  if (receivingCall) {
+    incomingCall = (
+      <div>
+        <h1>
+          {callerName}
+          {' '}
+          님이 참석을 원합니다.
+        </h1>
+        <button onClick={acceptCall}>수락하기</button>
+      </div>
+    );
   }
 
   return (
     <main>
-      { !peerStream && 'Loading..' }
       <div>
-        <Video playsInline ref={peerVideo} autoPlay />
+        <Container>
+          <Row>
+            {PartnerVideo}
+          </Row>
+          <Row>
+            {!isHost
+              && (
+                <button onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>
+                  회의 참석하기
+                </button>
+              )}
+          </Row>
+          <Row>
+            {incomingCall}
+          </Row>
+        </Container>
       </div>
       <div>
         스크립트

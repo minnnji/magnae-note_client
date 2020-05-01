@@ -6,39 +6,12 @@ const Video = styled.video`
 `;
 
 const MeetingSideBar = props => {
-  const { setStream } = props;
+  const { stream } = props;
   const userVideo = useRef();
 
-  useEffect(() => {
-    (async () => {
-      navigator.getWebcam = (navigator.getUserMedia
-        || navigator.webKitGetUserMedia
-        || navigator.moxGetUserMedia
-        || navigator.mozGetUserMedia
-        || navigator.msGetUserMedia);
-      if (navigator.mediaDevices.getUserMedia) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-          setStream(stream);
-          if (userVideo.current) {
-            userVideo.current.srcObject = stream;
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        try {
-          const stream = await navigator.getWebcam({ audio: true, video: true });
-          setStream(stream);
-          if (userVideo.current) {
-            userVideo.current.srcObject = stream;
-          }
-        } catch (err) {
-          console.log('Web cam is not accessible.');
-        }
-      }
-    })();
-  }, []);
+  if (userVideo.current) {
+    userVideo.current.srcObject = stream;
+  }
 
   return (
     <nav>

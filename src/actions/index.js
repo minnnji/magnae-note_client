@@ -11,12 +11,12 @@ export const deleteUser = () => ({
   type: types.LOGOUT_SUCCESS
 });
 
-export const setModeNew = () => ({
-  type: types.MODE_MEETING_NEW
+export const setModeHost = () => ({
+  type: types.MODE_MEETING_HOST
 });
 
-export const setModeJoin = () => ({
-  type: types.MODE_MEETING_JOIN
+export const setModeGuest = () => ({
+  type: types.MODE_MEETING_GUEST
 });
 
 export const createMeeting = (id, title, creator) => ({
@@ -37,4 +37,9 @@ export const joinMeeting = (meetingInfo, name) => ({
 export const receiveNotice = message => ({
   type: types.RECEIVE_SOCKET_MESSAGE,
   message
+});
+
+export const receiveMyStream = stream => ({
+  type: types.RECEIVE_MYSTREAM,
+  stream
 });

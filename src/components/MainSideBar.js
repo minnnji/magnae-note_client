@@ -2,12 +2,12 @@ import React from 'react';
 import Button from './Items/Button';
 
 const MainSideBar = props => {
-  const { setModeNew, setModeJoin, dispatch } = props;
+  const { setModeHost, setModeGuest, dispatch } = props;
   return (
     <nav>
       <div>
-        <Button onClick={() => dispatch(setModeNew())}>새 회의실 만들기</Button>
-        <Button onClick={() => dispatch(setModeJoin())}>회의 참여하기</Button>
+        <Button onClick={() => dispatch(setModeHost())}>새 회의실 만들기</Button>
+        <Button onClick={() => dispatch(setModeGuest())}>회의 참여하기</Button>
       </div>
       <div>
         두번째

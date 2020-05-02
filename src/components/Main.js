@@ -10,7 +10,7 @@ const Main = props => {
     <main>
       <div>
         <h1>
-          {mode === 'new'
+          {mode === 'host'
             ? '새 회의실 만들기'
             : '회의 참여하기'}
         </h1>
@@ -24,7 +24,7 @@ const Main = props => {
           defaultValue={password}
           onChange={e => setPassword(e.target.value)}
         />
-        {mode === 'new'
+        {mode === 'host'
           ? (
             <Button onClick={async () => {
               const meetingId = await createNewMeeting(title, password, user_id, name, dispatch);

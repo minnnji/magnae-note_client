@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setModeNew, setModeJoin } from '../actions/index';
+import { setModeHost, setModeGuest } from '../actions/index';
 import MainSideBar from '../components/MainSideBar';
 
 const MainSideBarContainer = props => {
@@ -9,8 +9,8 @@ const MainSideBarContainer = props => {
   return (
     <>
       <MainSideBar
-        setModeNew={setModeNew}
-        setModeJoin={setModeJoin}
+        setModeHost={setModeHost}
+        setModeGuest={setModeGuest}
         dispatch={dispatch}
       />
     </>

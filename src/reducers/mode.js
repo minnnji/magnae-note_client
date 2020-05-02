@@ -1,20 +1,20 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-  mode: 'new'
+  mode: 'host'
 };
 
 const mode = (state = initialState, action) => {
   switch (action.type) {
-    case types.MODE_MEETING_NEW:
+    case types.MODE_MEETING_HOST:
       return {
         ...state,
-        mode: 'new'
+        mode: 'host'
       };
-    case types.MODE_MEETING_JOIN:
+    case types.MODE_MEETING_GUEST:
       return {
         ...state,
-        mode: 'join'
+        mode: 'guest'
       };
     default: return state;
   }

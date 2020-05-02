@@ -3,6 +3,7 @@ import * as types from '../constants/actionTypes';
 const initialState = {
   _id: '',
   title: '',
+  myStream: '',
   creator: '',
   peer: '',
   noticeList: [],
@@ -39,6 +40,11 @@ const meeting = (state = initialState, action) => {
       return {
         ...state,
         noticeList: updateNoticeList(state.noticeList, action.message)
+      };
+    case types.RECEIVE_MYSTREAM:
+      return {
+        ...state,
+        myStream: action.stream
       };
     default: return state;
   }

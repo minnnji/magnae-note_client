@@ -25,9 +25,14 @@ const Meeting = props => {
     callerName,
     partnerPeerInfo,
     partnerVideo,
+    text,
+    subText,
     callAccepted,
     acceptCall,
-    callPeer
+    callPeer,
+    onListenClick,
+    onStopClick,
+    stopButtonRef
   } = props;
 
   let PartnerVideo;
@@ -46,7 +51,7 @@ const Meeting = props => {
           {' '}
           님이 참석을 원합니다.
         </h1>
-        <button onClick={acceptCall}>수락하기</button>
+        <button type="button" onClick={acceptCall}>수락하기</button>
       </div>
     );
   }
@@ -61,7 +66,7 @@ const Meeting = props => {
           <Row>
             {!isHost
               && (
-                <button onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>
+                <button type="button" onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>
                   회의 참석하기
                 </button>
               )}
@@ -72,7 +77,14 @@ const Meeting = props => {
         </Container>
       </div>
       <div>
-        스크립트
+        <button type="button" onClick={onListenClick}>
+          listen!
+        </button>
+        <button type="button" ref={stopButtonRef} onClick={onStopClick}>
+          stop!
+        </button>
+        <div>{text}</div>
+        <div>{subText}</div>
       </div>
     </main>
   );

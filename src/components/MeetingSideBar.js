@@ -6,10 +6,21 @@ const Video = styled.video`
 `;
 
 const MeetingSideBar = props => {
-  const { stream } = props;
+  const {
+    stream,
+    handleStart,
+    handleStop,
+    recordedVideo,
+    handlePlayRecordedVideo,
+    handleDownLoadVideo
+  } = props;
   const userVideo = useRef();
 
-  if (userVideo.current) {
+  if (userVideo.current && stream) {
+    userVideo.current.srcObject = stream;
+  }
+
+  if (userVideo.current && stream) {
     userVideo.current.srcObject = stream;
   }
 
@@ -21,6 +32,11 @@ const MeetingSideBar = props => {
           <Video playsInline muted ref={userVideo} autoPlay />
         </div>
       </div>
+      <button type="button" onClick={handleStart}>회의 시작</button>
+      <button type="button" onClick={handleStop}>회의 종료</button>
+      <button type="button" onClick={handlePlayRecordedVideo}>회의 다시보기</button>
+      <button type="button" onClick={handleDownLoadVideo}>회의 다운로드</button>
+      <Video playsInline ref={recordedVideo} autoPlay />
       <div>
         미팅 상세정보
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Video = styled.video`
@@ -15,10 +15,6 @@ const MeetingSideBar = props => {
     handleDownLoadVideo
   } = props;
   const userVideo = useRef();
-
-  if (userVideo.current && stream) {
-    userVideo.current.srcObject = stream;
-  }
 
   if (userVideo.current && stream) {
     userVideo.current.srcObject = stream;
@@ -44,4 +40,4 @@ const MeetingSideBar = props => {
   );
 };
 
-export default MeetingSideBar;
+export default memo(MeetingSideBar);

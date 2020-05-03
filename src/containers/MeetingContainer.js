@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
@@ -7,7 +7,6 @@ import queryString from 'query-string';
 import HeaderContainer from './HeaderContainer';
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';
-import messages from '../constants/messages';
 import { receiveMyStream } from '../actions/index';
 
 function MeetingContainer(props) {
@@ -22,7 +21,6 @@ function MeetingContainer(props) {
   // webRTC
   const [mySocket, setMySocket] = useState({});
   const [partnerPeerInfo, setPartnerPeerInfo] = useState([]);
-  // const [stream, setStream] = useState();
   const [receivingCall, setReceivingCall] = useState(false);
   const [callerId, setCallerId] = useState('');
   const [callerName, setCallerName] = useState('');
@@ -48,7 +46,6 @@ function MeetingContainer(props) {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: true, video: true })
         .then(myStream => {
-          // setStream(myStream);
           dispatch(receiveMyStream(myStream));
           if (userVideo.current) {
             userVideo.current.srcObject = myStream;
@@ -58,7 +55,6 @@ function MeetingContainer(props) {
     } else {
       navigator.getWebcam({ audio: true, video: true },
         myStream => {
-          // setStream(myStream);
           if (userVideo.current) {
             userVideo.current.srcObject = myStream;
           }
@@ -176,8 +172,8 @@ function MeetingContainer(props) {
   // record
   const mediaSource = new MediaSource();
   mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
-  let mediaRecorder;
-  let recordedBlobs;
+  const [isMediaRecorder, setIsMediaRecorder] = useState(false);
+  const recordedBlobs = useMemo(() => isMediaRecorder && [], [isMediaRecorder]);
   let sourceBuffer;
 
   function handleSourceOpen(event) {
@@ -187,14 +183,12 @@ function MeetingContainer(props) {
   }
 
   function handleDataAvailable(event) {
-    console.log(mediaRecorder);
     if (event.data && event.data.size > 0) {
       recordedBlobs.push(event.data);
     }
   }
 
-  const handleStart = () => {
-    recordedBlobs = [];
+  const createMediaRecorder = () => {
     let options = { mimeType: 'video/webm;codecs=vp9' };
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
       console.error(`${options.mimeType} is not Supported`);
@@ -213,55 +207,48 @@ function MeetingContainer(props) {
     }
 
     try {
-      mediaRecorder = new MediaRecorder(stream, options);
+      const recorder = new MediaRecorder(stream, options);
+      return recorder;
     } catch (e) {
       console.error('Exception while creating MediaRecorder:', e);
       alert(`Exception while creating MediaRecorder: ${JSON.stringify(e)}`);
-      return;
-    }
-
-    console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
-
-    mediaRecorder.onstop = event => {
-      console.log('Recorder stopped: ', event);
-      console.log('Recorded Blobs: ', recordedBlobs);
-    };
-    mediaRecorder.ondataavailable = handleDataAvailable;
-    mediaRecorder.start(10);
-    console.log('MediaRecorder started', mediaRecorder);
-  };
-
-  const handleStop = () => {
-    console.log(mediaRecorder);
-    // mediaRecorder.stop();  >>>>>>>>>>>>>> mediaRecorder가 undefined됨. rerender이슈 확인필요
-    // micStream.stop();
-    const isDown = window.confirm(messages.whetherToDownload);
-    if (isDown) {
-      const blob = new Blob(recordedBlobs, { type: 'video/mp4' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = 'test.webm';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 100);
     }
   };
 
-  const handlePlayRecordedVideo = () => {
+  const mediaRecorder = useMemo(() => isMediaRecorder && createMediaRecorder(), [isMediaRecorder]);
+
+  useEffect(() => {
+    if (mediaRecorder) {
+      console.log('mediaRecorder Setting!');
+      mediaRecorder.onstop = event => {
+        console.log('Recorder stopped: ', event);
+        console.log('Recorded Blobs: ', recordedBlobs);
+      };
+      mediaRecorder.ondataavailable = handleDataAvailable;
+      mediaRecorder.start(10);
+      console.log('MediaRecorder started', mediaRecorder);
+    }
+  }, [mediaRecorder]);
+
+  const handleStart = useCallback(() => {
+    setIsMediaRecorder(false);
+    setIsMediaRecorder(true);
+  }, [stream]);
+
+  const handleStop = useCallback(() => {
+    mediaRecorder.stop();
+  }, [mediaRecorder]);
+
+  const handlePlayRecordedVideo = useCallback(() => {
     const superBuffer = new Blob(recordedBlobs, { type: 'video/mp4' });
     recordedVideo.current.src = null;
     recordedVideo.current.srcObject = null;
     recordedVideo.current.src = window.URL.createObjectURL(superBuffer);
     recordedVideo.current.controls = true;
     recordedVideo.current.play();
-  };
+  }, [recordedBlobs]);
 
-  const handleDownLoadVideo = () => {
+  const handleDownLoadVideo = useCallback(() => {
     const blob = new Blob(recordedBlobs, { type: 'video/mp4' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -274,7 +261,7 @@ function MeetingContainer(props) {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }, 100);
-  };
+  }, [recordedBlobs]);
 
   return (
     <>

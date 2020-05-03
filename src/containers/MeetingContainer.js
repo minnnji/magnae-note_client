@@ -7,6 +7,7 @@ import queryString from 'query-string';
 import HeaderContainer from './HeaderContainer';
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';
+import messages from '../constants/messages';
 import { receiveMyStream } from '../actions/index';
 
 function MeetingContainer(props) {
@@ -133,26 +134,36 @@ function MeetingContainer(props) {
   const [text, setText] = useState('');
   const [subText, setSubText] = useState('');
   const [micStream, setMicStream] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const scripts = [];
 
-  const onListenClick = () => {
+  const onListenClick = useCallback(() => {
     fetch('https://localhost:4000/api/speech-to-text/token')
       .then(response => response.json()).then(token => {
         const micListener = recognizeMic(Object.assign(token, {
           model: 'ko-KR_BroadbandModel',
           objectMode: true,
-          format: true
+          format: true,
+          timestamps: true
         }));
         setMicStream(micListener);
 
         let script = '';
 
         micListener.on('data', data => {
-          const streaming = data.results[0].alternatives[0].transcript;
           const isRest = data.results[0].final;
-          setSubText(streaming);
+          const streaming = data.results[0].alternatives[0];
+          const streamingScript = streaming.transcript;
+          setSubText(streamingScript);
           if (isRest) {
+            const streamingStartTime = parseInt(streaming.timestamps[0][1], 10);
+            scripts.push({
+              currentTime: streamingStartTime,
+              script: streamingScript
+            });
+            console.log(scripts);
             setSubText('');
-            script += streaming;
+            script += streamingScript;
             setText(script);
           }
         });
@@ -163,11 +174,7 @@ function MeetingContainer(props) {
       }).catch(error => {
         console.log(error);
       });
-  };
-
-  const onStopClick = () => {
-    micStream.stop();
-  };
+  }, [scripts]);
 
   // record
   const mediaSource = new MediaSource();
@@ -230,14 +237,34 @@ function MeetingContainer(props) {
     }
   }, [mediaRecorder]);
 
+  const download = (content, fileName, contentType) => {
+    const file = new Blob(content, { type: contentType });
+    const url = window.URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+  };
+
   const handleStart = useCallback(() => {
     setIsMediaRecorder(false);
     setIsMediaRecorder(true);
+    setIsListening(true);
+    onListenClick();
   }, [stream]);
 
-  const handleStop = useCallback(() => {
-    mediaRecorder.stop();
-  }, [mediaRecorder]);
+  const handleStop = useCallback(async () => {
+    await mediaRecorder.stop();
+    await micStream.stop();
+
+    const isDown = window.confirm(messages.whetherToDownload);
+    if (isDown) {
+      download(recordedBlobs, 'test.webm', 'video/mp4');
+      console.log({ scripts });
+      const scriptJson = JSON.stringify({ scripts });
+      download([scriptJson], 'json.txt', 'text/plain');
+    }
+  }, [mediaRecorder, micStream]);
 
   const handlePlayRecordedVideo = useCallback(() => {
     const superBuffer = new Blob(recordedBlobs, { type: 'video/mp4' });
@@ -286,8 +313,6 @@ function MeetingContainer(props) {
         callAccepted={callAccepted}
         acceptCall={acceptCall}
         callPeer={callPeer}
-        onListenClick={onListenClick}
-        onStopClick={onStopClick}
       />
     </>
   );

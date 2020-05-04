@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import theme from '../constants/theme';
 
 const Container = styled.div`
   height: 100vh;
@@ -13,8 +14,22 @@ const Row = styled.div`
   width: 100%;
 `;
 
+const NoVideo = styled.div`
+  margin: 1em;
+  padding: 1em;
+  height: 62vh;
+  background-color: ${theme.BG_COLOR_3};
+  border-radius: .5em;
+  color: ${theme.COLOR_WHITE};
+  text-align: center;
+  line-height: 16em;
+  font-size: 1.5em;
+`;
+
 const Video = styled.video`
-  width: 100%;
+  width: -webkit-fill-available;
+  margin: 1.5em;
+  border-radius: .5em;
 `;
 
 const Meeting = props => {
@@ -29,10 +44,7 @@ const Meeting = props => {
     subText,
     callAccepted,
     acceptCall,
-    callPeer,
-    onListenClick,
-    onStopClick,
-    stopButtonRef
+    callPeer
   } = props;
 
   let PartnerVideo;
@@ -46,11 +58,9 @@ const Meeting = props => {
   if (receivingCall) {
     incomingCall = (
       <div>
-        <h1>
-          {callerName}
-          {' '}
-          님이 참석을 원합니다.
-        </h1>
+        {callerName}
+        {' '}
+        님이 참석을 원합니다.
         <button type="button" onClick={acceptCall}>수락하기</button>
       </div>
     );
@@ -60,9 +70,11 @@ const Meeting = props => {
     <main>
       <div>
         <Container>
-          <Row>
-            {PartnerVideo}
-          </Row>
+          {PartnerVideo
+            ? <Row>{PartnerVideo}</Row>
+            : incomingCall
+              ? <NoVideo>{incomingCall}</NoVideo>
+              : <NoVideo>상대방을 기다리는 중입니다.</NoVideo>}
           <Row>
             {!isHost
               && (
@@ -71,18 +83,9 @@ const Meeting = props => {
                 </button>
               )}
           </Row>
-          <Row>
-            {incomingCall}
-          </Row>
         </Container>
       </div>
       <div>
-        <button type="button" onClick={onListenClick}>
-          listen!
-        </button>
-        <button type="button" ref={stopButtonRef} onClick={onStopClick}>
-          stop!
-        </button>
         <div>{text}</div>
         <div>{subText}</div>
       </div>

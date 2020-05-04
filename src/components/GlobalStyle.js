@@ -26,7 +26,14 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${theme.BG_COLOR_4};
   }
 
-  nav {
+  Main-nav {
+    display: grid;
+    grid-template-rows: 10em;
+    grid-area: nav;
+    background-color: ${theme.BG_COLOR_3};
+  }
+
+  Meeting-nav {
     display: grid;
     grid-template-rows: 15em;
     grid-area: nav;
@@ -47,6 +54,7 @@ const GlobalStyle = createGlobalStyle`
 
   h1, h2, h3, h4, h5, h6, p {
     margin: 0;
+    color: ${theme.COLOR_WHITE};
   }
 
   a, a:link, a:visited {

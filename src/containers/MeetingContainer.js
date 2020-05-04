@@ -10,6 +10,8 @@ import Meeting from '../components/Meeting';
 import messages from '../constants/messages';
 import { receiveMyStream } from '../actions/index';
 
+const scripts = [];
+
 function MeetingContainer(props) {
   const { history, location } = props;
   const { meetingId } = queryString.parse(location.search);
@@ -135,7 +137,6 @@ function MeetingContainer(props) {
   const [subText, setSubText] = useState('');
   const [micStream, setMicStream] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const scripts = [];
 
   const onListenClick = useCallback(() => {
     fetch('https://localhost:4000/api/speech-to-text/token')
@@ -151,6 +152,7 @@ function MeetingContainer(props) {
         let script = '';
 
         micListener.on('data', data => {
+          if (!data.results.length) return;
           const isRest = data.results[0].final;
           const streaming = data.results[0].alternatives[0];
           const streamingScript = streaming.transcript;
@@ -161,7 +163,6 @@ function MeetingContainer(props) {
               currentTime: streamingStartTime,
               script: streamingScript
             });
-            console.log(scripts);
             setSubText('');
             script += streamingScript;
             setText(script);
@@ -237,13 +238,14 @@ function MeetingContainer(props) {
     }
   }, [mediaRecorder]);
 
-  const download = (content, fileName, contentType) => {
+  const download = (content, fileName, contentType, cb) => {
     const file = new Blob(content, { type: contentType });
     const url = window.URL.createObjectURL(file);
     const a = document.createElement('a');
     a.href = url;
     a.download = fileName;
     a.click();
+    if (cb) cb();
   };
 
   const handleStart = useCallback(() => {
@@ -257,12 +259,21 @@ function MeetingContainer(props) {
     await mediaRecorder.stop();
     await micStream.stop();
 
-    const isDown = window.confirm(messages.whetherToDownload);
-    if (isDown) {
-      download(recordedBlobs, 'test.webm', 'video/mp4');
-      console.log({ scripts });
-      const scriptJson = JSON.stringify({ scripts });
-      download([scriptJson], 'json.txt', 'text/plain');
+    const isVideoDown = window.confirm(messages.whetherToVideoDown);
+    if (isVideoDown) {
+      download(recordedBlobs, 'test.webm', 'video/mp4', () => {
+        const isScriptDown = window.confirm(messages.whetherToScriptDown);
+        if (isScriptDown) {
+          const scriptJson = JSON.stringify({ scripts });
+          download([scriptJson], 'json.txt', 'text/plain');
+        }
+      });
+    } else {
+      const isScriptDown = window.confirm(messages.whetherToScriptDown);
+      if (isScriptDown) {
+        const scriptJson = JSON.stringify({ scripts });
+        download([scriptJson], 'json.txt', 'text/plain');
+      }
     }
   }, [mediaRecorder, micStream]);
 

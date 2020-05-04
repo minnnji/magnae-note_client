@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import Button from './Items/Button';
+import styled from 'styled-components';
+import { BigButton } from './Items/Button';
+import Input from './Items/Input';
+
+const Wrapper = styled.div`
+  margin: 4em;
+`;
 
 const Main = props => {
   const { mode, user_id, name, dispatch, createNewMeeting, joinMeetingApi, history } = props;
@@ -8,43 +14,43 @@ const Main = props => {
 
   return (
     <main>
-      <div>
-        <h1>
+      <Wrapper>
+        <h2>
           {mode === 'host'
             ? '새 회의실 만들기'
             : '회의 참여하기'}
-        </h1>
-        <input
+        </h2>
+        <Input
           placeholder="회의실 이름"
           defaultValue={title}
           onChange={e => setTitle(e.target.value)}
         />
-        <input
+        <Input
           placeholder="비밀번호"
           defaultValue={password}
           onChange={e => setPassword(e.target.value)}
         />
         {mode === 'host'
           ? (
-            <Button onClick={async () => {
+            <BigButton onClick={async () => {
               const meetingId = await createNewMeeting(title, password, user_id, name, dispatch);
               history.push(`/meeting?meetingId=${meetingId}`);
             }}
             >
               완료
-            </Button>
+            </BigButton>
           )
           : (
-            <Button onClick={async () => {
+            <BigButton onClick={async () => {
               const meeting = await joinMeetingApi(title, password, name, dispatch);
               history.push(`/meeting?meetingId=${meeting._id}`);
             }}
             >
               들어가기
 
-            </Button>
+            </BigButton>
           )}
-      </div>
+      </Wrapper>
     </main>
   );
 };

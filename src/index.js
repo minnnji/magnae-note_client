@@ -16,13 +16,7 @@ dotenv.config();
 const middleware = [];
 const persistConfig = {
   key: 'root',
-  storage,
-  whitelist: [
-    'latelySleep'
-  ],
-  blacklist: [
-    'user'
-  ]
+  storage
 };
 
 console.log(process.env.APIKEY);

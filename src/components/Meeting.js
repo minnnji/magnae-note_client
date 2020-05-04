@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../constants/theme';
+import { BigButton } from './Items/Button';
 
 const Container = styled.div`
   height: 100vh;
@@ -15,6 +16,8 @@ const Row = styled.div`
 `;
 
 const NoVideo = styled.div`
+  display: flex;
+  align-items: center;
   margin: 1em;
   padding: 1em;
   height: 62vh;
@@ -22,7 +25,7 @@ const NoVideo = styled.div`
   border-radius: .5em;
   color: ${theme.COLOR_WHITE};
   text-align: center;
-  line-height: 16em;
+  line-height: 2em;
   font-size: 1.5em;
 `;
 
@@ -36,6 +39,7 @@ const Meeting = props => {
   const {
     mySocket,
     isHost,
+    sendingCall,
     receivingCall,
     callerName,
     partnerPeerInfo,
@@ -55,14 +59,35 @@ const Meeting = props => {
   }
 
   let incomingCall;
-  if (receivingCall) {
+  if (!receivingCall) {
     incomingCall = (
-      <div>
+      <NoVideo>
+        상대방을 기다리는 중 입니다.
+      </NoVideo>
+    );
+  } else if (!callAccepted && receivingCall) {
+    incomingCall = (
+      <NoVideo>
         {callerName}
         {' '}
         님이 참석을 원합니다.
-        <button type="button" onClick={acceptCall}>수락하기</button>
-      </div>
+        <BigButton onClick={acceptCall}>수락하기</BigButton>
+      </NoVideo>
+    );
+  }
+
+  let outGoingCall;
+  if (!sendingCall) {
+    outGoingCall = (
+      <NoVideo>
+        {partnerPeerInfo[0]}
+        님 에게
+        <BigButton onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>수락 요청하기</BigButton>
+      </NoVideo>
+    );
+  } else if (sendingCall && !callAccepted) {
+    outGoingCall = (
+      <NoVideo>수락을 기다리는 중입니다.</NoVideo>
     );
   }
 
@@ -70,19 +95,11 @@ const Meeting = props => {
     <main>
       <div>
         <Container>
-          {PartnerVideo
-            ? <Row>{PartnerVideo}</Row>
-            : incomingCall
-              ? <NoVideo>{incomingCall}</NoVideo>
-              : <NoVideo>상대방을 기다리는 중입니다.</NoVideo>}
-          <Row>
-            {!isHost
-              && (
-                <button type="button" onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>
-                  회의 참석하기
-                </button>
-              )}
-          </Row>
+          {isHost
+            && incomingCall}
+          {isHost
+            || outGoingCall }
+          {PartnerVideo}
         </Container>
       </div>
       <div>

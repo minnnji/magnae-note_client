@@ -17,8 +17,8 @@ const MainSideBar = props => {
   return (
     <Main-nav>
       <SideBarTop>
-        <BigBlueFilledButton onClick={() => dispatch(setModeHost())}>새 회의실 만들기</BigBlueFilledButton>
-        <BigButton onClick={() => dispatch(setModeGuest())}>회의 참여하기</BigButton>
+        <BigBlueFilledButton inline onClick={() => dispatch(setModeHost())}>새 회의실 만들기</BigBlueFilledButton>
+        <BigButton inline onClick={() => dispatch(setModeGuest())}>회의 참여하기</BigButton>
       </SideBarTop>
       <SideBarBottom>
         나의 회의록

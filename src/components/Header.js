@@ -54,7 +54,7 @@ const Header = props => {
                 Logout
               </GrayButton>
             )
-            : <BlueButton onClick={() => handleLogin(dispatch)}>로그인</BlueButton>
+            : <BlueButton inline onClick={() => handleLogin(dispatch)}>로그인</BlueButton>
         }
       </HeaderRight>
     </header>

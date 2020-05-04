@@ -24,6 +24,7 @@ function MeetingContainer(props) {
   // webRTC
   const [mySocket, setMySocket] = useState({});
   const [partnerPeerInfo, setPartnerPeerInfo] = useState([]);
+  const [sendingCall, setSendingCall] = useState(false);
   const [receivingCall, setReceivingCall] = useState(false);
   const [callerId, setCallerId] = useState('');
   const [callerName, setCallerName] = useState('');
@@ -79,6 +80,7 @@ function MeetingContainer(props) {
 
     socket.on('hey', data => {
       setReceivingCall(true);
+      setSendingCall(false);
       setCallerId(data.fromId);
       setCallerName(data.fromName);
       setCallerSignal(data.signal);
@@ -98,6 +100,7 @@ function MeetingContainer(props) {
         signalData: data,
         fromId: mySocket.id,
         fromName: user.name });
+      setSendingCall(true);
     });
 
     myPeer.on('stream', stream => {
@@ -315,6 +318,7 @@ function MeetingContainer(props) {
       <Meeting
         mySocket={mySocket}
         isHost={isHost}
+        sendingCall={sendingCall}
         receivingCall={receivingCall}
         callerName={callerName}
         partnerPeerInfo={partnerPeerInfo}

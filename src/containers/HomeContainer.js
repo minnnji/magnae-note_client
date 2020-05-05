@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Main from '../components/Main';
 import HeaderContainer from './HeaderContainer';
 import MainSideBarContainer from './MainSideBarContainer';
-import { createNewMeeting, joinMeetingApi } from '../lib/api';
+import { createNewMeetingApi, joinMeetingApi } from '../lib/api';
 
 const HomeContainer = props => {
   const { history } = props;
@@ -21,7 +21,7 @@ const HomeContainer = props => {
         user_id={user_id}
         name={name}
         dispatch={dispatch}
-        createNewMeeting={createNewMeeting}
+        createNewMeetingApi={createNewMeetingApi}
         joinMeetingApi={joinMeetingApi}
         history={history}
       />

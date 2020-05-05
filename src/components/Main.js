@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 `;
 
 const Main = props => {
-  const { mode, user_id, name, dispatch, createNewMeeting, joinMeetingApi, history } = props;
+  const { mode, user_id, name, dispatch, createNewMeetingApi, joinMeetingApi, history } = props;
   const [title, setTitle] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,7 +33,7 @@ const Main = props => {
         {mode === 'host'
           ? (
             <BigButton onClick={async () => {
-              const meetingId = await createNewMeeting(title, password, user_id, name, dispatch);
+              const meetingId = await createNewMeetingApi(title, password, user_id, name, dispatch);
               history.push(`/meeting?meetingId=${meetingId}`);
             }}
             >

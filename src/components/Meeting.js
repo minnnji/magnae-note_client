@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import theme from '../constants/theme';
 import { BigButton } from './Items/Button';
+import Script from './Script';
 
 const Container = styled.div`
   height: 100vh;
@@ -42,21 +43,16 @@ const Meeting = props => {
     sendingCall,
     receivingCall,
     callerName,
-    partnerPeerInfo,
+    memberList,
     partnerVideo,
-    text,
-    subText,
     callAccepted,
     acceptCall,
-    callPeer
+    callPeer,
+    text,
+    subText,
+    handleStart,
+    handleStop
   } = props;
-
-  let PartnerVideo;
-  if (callAccepted) {
-    PartnerVideo = (
-      <Video playsInline ref={partnerVideo} autoPlay />
-    );
-  }
 
   let incomingCall;
   if (!receivingCall) {
@@ -77,17 +73,24 @@ const Meeting = props => {
   }
 
   let outGoingCall;
-  if (!sendingCall) {
+  if (!sendingCall && memberList.length) {
     outGoingCall = (
       <NoVideo>
-        {partnerPeerInfo[0]}
+        {memberList[0][0]}
         님 에게
-        <BigButton onClick={() => callPeer(mySocket, partnerPeerInfo[1])}>수락 요청하기</BigButton>
+        <BigButton onClick={() => callPeer(mySocket, memberList[0][1])}>수락 요청하기</BigButton>
       </NoVideo>
     );
   } else if (sendingCall && !callAccepted) {
     outGoingCall = (
       <NoVideo>수락을 기다리는 중입니다.</NoVideo>
+    );
+  }
+
+  let PartnerVideo;
+  if (callAccepted) {
+    PartnerVideo = (
+      <Video playsInline ref={partnerVideo} autoPlay />
     );
   }
 
@@ -103,8 +106,13 @@ const Meeting = props => {
         </Container>
       </div>
       <div>
-        <div>{text}</div>
-        <div>{subText}</div>
+        <Script
+          isHost={isHost}
+          text={text}
+          subText={subText}
+          handleStart={handleStart}
+          handleStop={handleStop}
+        />
       </div>
     </main>
   );

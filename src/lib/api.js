@@ -37,24 +37,34 @@ export const handleLogout = async dispatch => {
   dispatch(deleteUser());
 };
 
-export const createNewMeeting = async (title, password, user_id, name, dispatch) => {
+export const createNewMeetingApi = async (title, password, user_id, name, dispatch) => {
   const newMeeting = await axios.post('https://localhost:4000/api/meetings',
     { title,
       password,
       creator: user_id });
-
   dispatch(createMeeting(newMeeting.data.meetingId, title, name));
   return newMeeting.data.meetingId;
 };
 
 export const joinMeetingApi = async (title, password, name, dispatch) => {
   try {
-    const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation',
-      { title, password });
-
+    const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation', {
+      title, password });
     dispatch(joinMeeting(meetingRes.data.meetingInfo, name));
     return meetingRes.data.meetingInfo;
   } catch (err) {
+    console.log(err);
+    alert(err.response.data.message);
+  }
+};
+
+export const updateMeetingApi = async (meetingId, startTime, endTime, members) => {
+  try {
+    await axios.put(`https://localhost:4000/api/meetings/${meetingId}`, {
+      startTime, endTime, members
+    });
+  } catch (err) {
+    console.log(err);
     alert(err.response.data.message);
   }
 };

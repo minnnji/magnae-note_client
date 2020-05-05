@@ -4,11 +4,12 @@ import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import recognizeMic from 'watson-speech/speech-to-text/recognize-microphone';
 import queryString from 'query-string';
+import { updateMeetingApi } from '../lib/api';
 import HeaderContainer from './HeaderContainer';
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';
 import messages from '../constants/messages';
-import { receiveMyStream } from '../actions/index';
+import { receiveMyStream, receiveStartTime, receiveEndTime, receiveMember } from '../actions/index';
 
 const scripts = [];
 
@@ -18,18 +19,19 @@ function MeetingContainer(props) {
 
   const mode = useSelector(state => state.mode.mode);
   const user = useSelector(state => state.user);
+  const { _id, startTime } = useSelector(state => state.meeting);
   const { myStream: stream } = useSelector(state => state.meeting);
   const dispatch = useDispatch();
 
   // webRTC
   const [mySocket, setMySocket] = useState({});
-  const [partnerPeerInfo, setPartnerPeerInfo] = useState([]);
   const [sendingCall, setSendingCall] = useState(false);
   const [receivingCall, setReceivingCall] = useState(false);
   const [callerId, setCallerId] = useState('');
   const [callerName, setCallerName] = useState('');
   const [callerSignal, setCallerSignal] = useState();
   const [callAccepted, setCallAccepted] = useState(false);
+  const [memberList, setMemberList] = useState([]);
 
   const userVideo = useRef();
   const partnerVideo = useRef();
@@ -74,8 +76,8 @@ function MeetingContainer(props) {
       socket.emit('joinRoom', user.name, roomId);
     }
 
-    socket.on('thisRoomUsers', peerInfo => {
-      setPartnerPeerInfo(peerInfo);
+    socket.on('thisRoomUsers', userList => {
+      setMemberList(userList);
     });
 
     socket.on('hey', data => {
@@ -139,7 +141,6 @@ function MeetingContainer(props) {
   const [text, setText] = useState('');
   const [subText, setSubText] = useState('');
   const [micStream, setMicStream] = useState('');
-  const [isListening, setIsListening] = useState(false);
 
   const onListenClick = useCallback(() => {
     fetch('https://localhost:4000/api/speech-to-text/token')
@@ -254,13 +255,18 @@ function MeetingContainer(props) {
   const handleStart = useCallback(() => {
     setIsMediaRecorder(false);
     setIsMediaRecorder(true);
-    setIsListening(true);
     onListenClick();
+    dispatch(receiveStartTime(new Date()));
   }, [stream]);
 
   const handleStop = useCallback(async () => {
+    const endTime = new Date();
+    dispatch(receiveEndTime(endTime));
+    dispatch(receiveMember(memberList));
     await mediaRecorder.stop();
     await micStream.stop();
+
+    await updateMeetingApi(_id, startTime, endTime, memberList);
 
     const isVideoDown = window.confirm(messages.whetherToVideoDown);
     if (isVideoDown) {
@@ -309,8 +315,6 @@ function MeetingContainer(props) {
       <HeaderContainer history={history} />
       <MeetingSideBar
         stream={stream}
-        handleStart={handleStart}
-        handleStop={handleStop}
         recordedVideo={recordedVideo}
         handlePlayRecordedVideo={handlePlayRecordedVideo} // 추후 상세페이지로 이동
         handleDownLoadVideo={handleDownLoadVideo}
@@ -321,13 +325,15 @@ function MeetingContainer(props) {
         sendingCall={sendingCall}
         receivingCall={receivingCall}
         callerName={callerName}
-        partnerPeerInfo={partnerPeerInfo}
+        memberList={memberList}
         partnerVideo={partnerVideo}
-        text={text}
-        subText={subText}
         callAccepted={callAccepted}
         acceptCall={acceptCall}
         callPeer={callPeer}
+        text={text}
+        subText={subText}
+        handleStart={handleStart}
+        handleStop={handleStop}
       />
     </>
   );

@@ -34,9 +34,19 @@ export const joinMeeting = (meetingInfo, name) => ({
   name
 });
 
-export const receiveNotice = message => ({
-  type: types.RECEIVE_SOCKET_MESSAGE,
-  message
+export const receiveStartTime = startTime => ({
+  type: types.RECEIVE_MEETING_STARTTIME,
+  startTime
+});
+
+export const receiveEndTime = endTime => ({
+  type: types.RECEIVE_MEETING_ENDTIME,
+  endTime
+});
+
+export const receiveMember = memberList => ({
+  type: types.RECEIVE_MEETING_MEMBER,
+  memberList
 });
 
 export const receiveMyStream = stream => ({

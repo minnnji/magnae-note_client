@@ -3,16 +3,16 @@ import * as types from '../constants/actionTypes';
 const initialState = {
   _id: '',
   title: '',
-  myStream: '',
   creator: '',
-  peer: '',
-  noticeList: [],
-  voiceList: []
+  startTime: '',
+  endTime: '',
+  myStream: '',
+  memberList: []
 };
 
-function updateNoticeList(currentList, updateNotice) {
+function updateListState(currentList, updateInfo) {
   const updateList = currentList.slice();
-  updateList.push(updateNotice);
+  updateList.push(updateInfo);
   return updateList;
 }
 
@@ -23,23 +23,29 @@ const meeting = (state = initialState, action) => {
         ...state,
         _id: action.id,
         title: action.title,
-        creator: action.creator,
-        peer: '',
-        noticeList: [],
-        voiceList: []
+        creator: action.creator
       };
     case types.JOIN_MEETING_SUCCESS:
       return {
         ...state,
         _id: action._id,
         title: action.title,
-        creator: action.creator,
-        peer: action.name
+        creator: action.creator
       };
-    case types.RECEIVE_SOCKET_MESSAGE:
+    case types.RECEIVE_MEETING_STARTTIME:
       return {
         ...state,
-        noticeList: updateNoticeList(state.noticeList, action.message)
+        startTime: action.startTime
+      };
+    case types.RECEIVE_MEETING_ENDTIME:
+      return {
+        ...state,
+        endTime: action.endTime
+      };
+    case types.RECEIVE_MEETING_MEMBER:
+      return {
+        ...state,
+        memberList: action.memberList
       };
     case types.RECEIVE_MYSTREAM:
       return {

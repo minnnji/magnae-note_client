@@ -16,7 +16,10 @@ dotenv.config();
 const middleware = [];
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  blacklist: [
+    'meeting'
+  ]
 };
 
 console.log(process.env.APIKEY);

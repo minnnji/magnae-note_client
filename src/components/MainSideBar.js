@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { BigButton, BigBlueFilledButton } from './Items/Button';
+import ScrollBox from './Items/ScrollBox';
 
 const SideBarTop = styled.div`
   margin: 1.5em 0;
@@ -8,12 +10,35 @@ const SideBarTop = styled.div`
 `;
 
 const SideBarBottom = styled.div`
+  margin: 1em 1.5em;
+  height: 27em;
   float: right;
-  margin: .5em;
+`;
+
+const Meeting = styled.div`
+  margin: 1em 0;
+  padding: 1em 0;
+  border-bottom: 1px dotted;
 `;
 
 const MainSideBar = props => {
-  const { setModeHost, setModeGuest, dispatch } = props;
+  const { meetingList, setModeHost, setModeGuest, dispatch } = props;
+
+  const MeetingList = meetingList.map(meeting => (
+    <Meeting>
+      <p>{meeting.title}</p>
+      <p>
+        [Host] |
+        {meeting.memberList[0][0]}
+      </p>
+      <p>
+        (
+        {`${moment(meeting.startTime).format('LLL')} ~ ${moment(meeting.endTime).format('LT')}`}
+        )
+      </p>
+    </Meeting>
+  ));
+
   return (
     <Main-nav>
       <SideBarTop>
@@ -21,7 +46,8 @@ const MainSideBar = props => {
         <BigButton inline onClick={() => dispatch(setModeGuest())}>회의 참여하기</BigButton>
       </SideBarTop>
       <SideBarBottom>
-        나의 회의록
+        <h2>나의 회의록</h2>
+        {meetingList && <ScrollBox>{MeetingList}</ScrollBox>}
       </SideBarBottom>
     </Main-nav>
   );

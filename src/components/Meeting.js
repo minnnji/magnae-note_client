@@ -43,6 +43,7 @@ const Meeting = props => {
     sendingCall,
     receivingCall,
     callerName,
+    callerId,
     memberList,
     partnerVideo,
     callAccepted,
@@ -110,6 +111,7 @@ const Meeting = props => {
           isHost={isHost}
           text={text}
           subText={subText}
+          callerId={callerId}
           handleStart={handleStart}
           handleStop={handleStop}
         />

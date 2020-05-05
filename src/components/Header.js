@@ -24,7 +24,7 @@ const Header = props => {
 
   return (
     <header>
-      <Title>Re-Mitting</Title>
+      <Title>Re-Meetting</Title>
       <HeaderRight>
         <HeaderSubText>
           {

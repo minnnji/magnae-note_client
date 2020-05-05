@@ -37,6 +37,27 @@ export const handleLogout = async dispatch => {
   dispatch(deleteUser());
 };
 
+export const getUserApi = async userId => {
+  try {
+    const response = await axios.get(`https://localhost:4000/api/users/${userId}`);
+    return response.data.userById;
+  } catch (err) {
+    console.log(err);
+    alert(err.response.data.message);
+  }
+};
+
+export const updateUserApi = async (userId, meetingId) => {
+  try {
+    await axios.put(`https://localhost:4000/api/users/${userId}`, {
+      meetingId
+    });
+  } catch (err) {
+    console.log(err);
+    alert(err.response.data.message);
+  }
+};
+
 export const createNewMeetingApi = async (title, password, user_id, name, dispatch) => {
   const newMeeting = await axios.post('https://localhost:4000/api/meetings',
     { title,
@@ -58,10 +79,10 @@ export const joinMeetingApi = async (title, password, name, dispatch) => {
   }
 };
 
-export const updateMeetingApi = async (meetingId, startTime, endTime, members) => {
+export const updateMeetingApi = async (meetingId, startTime, endTime, memberList) => {
   try {
     await axios.put(`https://localhost:4000/api/meetings/${meetingId}`, {
-      startTime, endTime, members
+      startTime, endTime, memberList
     });
   } catch (err) {
     console.log(err);

@@ -12,11 +12,11 @@ const ScriptWrapper = styled.div`
 `;
 
 const Script = props => {
-  const { isHost, text, subText, handleStart, handleStop } = props;
+  const { isHost, callerId, text, subText, handleStart, handleStop } = props;
   return (
     <Wrapper>
-      {isHost && <BigBlueFilledButton onClick={handleStart}>회의 시작</BigBlueFilledButton>}
-      {isHost && <BigBlueFilledButton onClick={handleStop}>회의 종료</BigBlueFilledButton>}
+      {isHost && <BigBlueFilledButton onClick={() => handleStart(callerId)}>회의 시작</BigBlueFilledButton>}
+      {isHost && <BigBlueFilledButton onClick={() => handleStop(callerId)}>회의 종료</BigBlueFilledButton>}
       {!isHost && <BigBlueFilledButton onClick={handleStop}>퇴장하기</BigBlueFilledButton>}
       <ScriptWrapper>
         <div>{text}</div>

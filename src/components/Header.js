@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../constants/theme';
 import { GrayButton, BlueButton } from './Items/Button';
@@ -24,7 +25,7 @@ const Header = props => {
 
   return (
     <header>
-      <Title>Re-Meetting</Title>
+      <Link to="/"><Title>Re-Meetting</Title></Link>
       <HeaderRight>
         <HeaderSubText>
           {

@@ -41,6 +41,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   main {
+    grid-area: main;
+    background-color: ${theme.BG_COLOR_5};
+  }
+
+  Meeting-main {
     display: grid;
     grid-template-columns: 48em 20em;
     grid-area: main;

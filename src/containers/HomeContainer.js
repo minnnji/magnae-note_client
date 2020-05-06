@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Main from '../components/Main';
 import HeaderContainer from './HeaderContainer';
 import MainSideBarContainer from './MainSideBarContainer';
+import Main from '../components/Main';
 import { createNewMeetingApi, joinMeetingApi } from '../lib/api';
 
 const HomeContainer = props => {

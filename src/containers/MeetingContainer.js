@@ -251,7 +251,6 @@ function MeetingContainer(props) {
   };
 
   const mediaRecorder = useMemo(() => isMediaRecorder && createMediaRecorder(), [isMediaRecorder]);
-  console.log('mediaRecorderrrrrr', mediaRecorder);
 
   useEffect(() => {
     if (mediaRecorder) {
@@ -274,7 +273,10 @@ function MeetingContainer(props) {
     a.href = url;
     a.download = fileName;
     a.click();
-    if (cb) cb();
+
+    if (cb) {
+      setTimeout(() => cb(), 1000);
+    }
   };
 
   const handleStart = useCallback(async partnerSocketId => {
@@ -293,7 +295,6 @@ function MeetingContainer(props) {
     }
 
     if (mediaRecorder.state === 'recording') {
-      console.log(micStream);
       await mediaRecorder.stop();
       await micStream.stop();
     }

@@ -5,15 +5,18 @@ import { getUserApi } from '../lib/api';
 import MainSideBar from '../components/MainSideBar';
 
 const MainSideBarContainer = props => {
+  const { detail, history } = props;
   const dispatch = useDispatch();
   const user_id = useSelector(state => state.user._id);
   const [meetingList, setMeetingList] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const userInfo = await getUserApi(user_id);
-      setMeetingList(userInfo.myMeetings);
-    })();
+    if (user_id) {
+      (async () => {
+        const userInfo = await getUserApi(user_id);
+        setMeetingList(userInfo.myMeetings);
+      })();
+    }
   }, []);
 
   return (
@@ -23,6 +26,8 @@ const MainSideBarContainer = props => {
         setModeHost={setModeHost}
         setModeGuest={setModeGuest}
         dispatch={dispatch}
+        detail={detail}
+        history={history}
       />
     </>
   );

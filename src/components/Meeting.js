@@ -96,7 +96,7 @@ const Meeting = props => {
   }
 
   return (
-    <main>
+    <Meeting-main>
       <div>
         <Container>
           {isHost
@@ -116,7 +116,7 @@ const Meeting = props => {
           handleStop={handleStop}
         />
       </div>
-    </main>
+    </Meeting-main>
   );
 };
 

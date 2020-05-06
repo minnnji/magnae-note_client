@@ -8,9 +8,11 @@
     "dotenv": "^8.2.0",
     "electron": "^8.2.3",
     "electron-is-dev": "^1.2.0",
+    "electron-store": "^5.1.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "firebase": "^7.14.1",
+    "fs": "^0.0.1-security",
     "moment": "^2.25.3",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
@@ -29,12 +31,14 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build": "yarn react-build && electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always"
+    "start": "rescripts start",
+    "build": "rescripts build",
+    "test": "rescripts test",
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "postinstall": "electron-builder",
+    "preelectron-pack": "yarn build",
+    "electron-pack": "build -mw"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +59,8 @@
     ]
   },
   "devDependencies": {
+    "@rescripts/cli": "^0.0.14",
+    "@rescripts/rescript-env": "^0.0.12",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "electron-builder": "^22.5.1",

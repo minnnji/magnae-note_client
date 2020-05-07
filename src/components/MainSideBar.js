@@ -25,8 +25,8 @@ const Meeting = styled.div`
 
 const MainSideBar = props => {
   const { meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
-  const MeetingList = meetingList.map(meeting => (
-    <Link to={`/myMeeting?meetingId=${meeting._id}`}>
+  const MeetingList = meetingList.map((meeting, i) => (
+    <Link to={`/myMeeting?meetingId=${meeting._id}`} key={i}>
       <Meeting>
         <p>{meeting.title}</p>
         <p>

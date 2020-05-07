@@ -11,11 +11,6 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Row = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
 const NoVideo = styled.div`
   display: flex;
   align-items: center;

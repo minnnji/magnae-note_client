@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import queryString from 'query-string';
-import electron from 'electron';
 import HeaderContainer from './HeaderContainer';
 import MainSideBarContainer from './MainSideBarContainer';
 import Detail from '../components/Detail';

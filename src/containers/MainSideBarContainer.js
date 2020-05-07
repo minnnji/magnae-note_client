@@ -17,7 +17,7 @@ const MainSideBarContainer = props => {
         setMeetingList(userInfo.myMeetings);
       })();
     }
-  }, []);
+  }, [user_id]);
 
   return (
     <>

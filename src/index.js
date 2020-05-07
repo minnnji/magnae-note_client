@@ -22,7 +22,6 @@ const persistConfig = {
   ]
 };
 
-console.log(process.env.APIKEY);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 if (process.env.NODE_ENV !== 'production') {

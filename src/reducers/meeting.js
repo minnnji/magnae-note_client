@@ -10,12 +10,6 @@ const initialState = {
   memberList: []
 };
 
-function updateListState(currentList, updateInfo) {
-  const updateList = currentList.slice();
-  updateList.push(updateInfo);
-  return updateList;
-}
-
 const meeting = (state = initialState, action) => {
   switch (action.type) {
     case types.CREATE_MEETING_SUCCESS:

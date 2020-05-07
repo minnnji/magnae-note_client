@@ -19,7 +19,7 @@ function MeetingContainer(props) {
 
   const mode = useSelector(state => state.mode.mode);
   const user = useSelector(state => state.user);
-  const { startTime, memberList: meetingMembers } = useSelector(state => state.meeting);
+  const { startTime } = useSelector(state => state.meeting);
   const { myStream: stream } = useSelector(state => state.meeting);
   const dispatch = useDispatch();
 

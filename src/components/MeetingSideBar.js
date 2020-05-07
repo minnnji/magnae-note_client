@@ -1,4 +1,4 @@
-import React, { memo, useState, useRef, useEffect } from 'react';
+import React, { memo, useRef } from 'react';
 import styled from 'styled-components';
 
 const Video = styled.video`

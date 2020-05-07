@@ -20,7 +20,7 @@ export const handleLogin = async dispatch => {
   try {
     const { user } = await firebase.auth().signInWithPopup(provider);
     const { email, displayName } = user;
-    const authResult = await axios.post('https://localhost:4000/api/auth/login', { email, name: displayName });
+    const authResult = await axios.post('https://api.magnae-note.com/api/auth/login', { email, name: displayName });
     const userInfo = authResult.data.payload;
 
     setHeader(authResult.data.jwtToken);
@@ -39,7 +39,7 @@ export const handleLogout = async dispatch => {
 
 export const getUserApi = async userId => {
   try {
-    const response = await axios.get(`https://localhost:4000/api/users/${userId}`);
+    const response = await axios.get(`https://api.magnae-note.com/api/users/${userId}`);
     return response.data.userById;
   } catch (err) {
     console.log(err);
@@ -49,7 +49,7 @@ export const getUserApi = async userId => {
 
 export const updateUserApi = async (userId, meetingId) => {
   try {
-    await axios.put(`https://localhost:4000/api/users/${userId}`, {
+    await axios.put(`https://api.magnae-note.com/api/users/${userId}`, {
       meetingId
     });
   } catch (err) {
@@ -59,7 +59,7 @@ export const updateUserApi = async (userId, meetingId) => {
 };
 
 export const createNewMeetingApi = async (title, password, user_id, name, dispatch) => {
-  const newMeeting = await axios.post('https://localhost:4000/api/meetings',
+  const newMeeting = await axios.post('https://api.magnae-note.com/api/meetings',
     { title,
       password,
       creator: user_id });
@@ -67,9 +67,20 @@ export const createNewMeetingApi = async (title, password, user_id, name, dispat
   return newMeeting.data.meetingId;
 };
 
+export const getMeetingApi = async meetingId => {
+  try {
+    const response = await axios.get(`https://api.magnae-note.com/api/meetings/${meetingId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    alert(err.response.data.message);
+  }
+};
+
 export const joinMeetingApi = async (title, password, name, dispatch) => {
   try {
-    const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation', {
+    const meetingRes = await axios.post('https://api.magnae-note.com/api/meetings/validation', {
       title, password });
     dispatch(joinMeeting(meetingRes.data.meetingInfo, name));
     return meetingRes.data.meetingInfo;
@@ -81,7 +92,7 @@ export const joinMeetingApi = async (title, password, name, dispatch) => {
 
 export const updateMeetingApi = async (meetingId, startTime, endTime, memberList) => {
   try {
-    await axios.put(`https://localhost:4000/api/meetings/${meetingId}`, {
+    await axios.put(`https://api.magnae-note.com/api/meetings/${meetingId}`, {
       startTime, endTime, memberList
     });
   } catch (err) {

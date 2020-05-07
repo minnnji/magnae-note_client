@@ -1,12 +1,28 @@
 {
   "name": "meeting-logger_client",
   "version": "0.1.0",
-  "main": "src/main.js",
+  "main": "public/electron.js",
   "private": true,
+  "homepage": "./",
+  "build": {
+    "appId": "com.magnae-note.mnapp",
+    "productName": "magnae-note",
+    "copyright": "Copyright © 2020 MJ",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
   "dependencies": {
     "axios": "^0.19.2",
+    "child_process": "^1.0.2",
     "dotenv": "^8.2.0",
-    "electron": "^8.2.3",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^5.1.1",
     "eslint": "^6.8.0",
@@ -32,13 +48,15 @@
   "scripts": {
     "react-start": "react-scripts start",
     "start": "rescripts start",
-    "build": "rescripts build",
     "test": "rescripts test",
+    "rescripts-build": "rescripts build",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder",
     "preelectron-pack": "yarn build",
-    "electron-pack": "build -mw"
+    "electron-pack": "build -mw",
+    "build": "yarn rescripts-build && yarn run postinstall",
+    "release": "yarn rescripts-build && yarn run postinstall --publish=always"
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +81,7 @@
     "@rescripts/rescript-env": "^0.0.12",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
+    "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
     "wait-on": "^4.0.2"
   }

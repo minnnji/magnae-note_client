@@ -41,7 +41,7 @@ function MeetingContainer(props) {
   const isHost = mode === 'host';
 
   useEffect(() => {
-    const socket = io.connect('https://localhost:4000/');
+    const socket = io.connect('https://api.magnae-note.com:3030');
     setMySocket(socket);
 
     navigator.getWebcam = (navigator.getUserMedia
@@ -166,7 +166,7 @@ function MeetingContainer(props) {
   const [micStream, setMicStream] = useState('');
 
   const onListenClick = useCallback(() => {
-    fetch('https://localhost:4000/api/speech-to-text/token')
+    fetch('https://api.magnae-note.com/api/speech-to-text/token')
       .then(response => response.json()).then(token => {
         const micListener = recognizeMic(Object.assign(token, {
           model: 'ko-KR_BroadbandModel',

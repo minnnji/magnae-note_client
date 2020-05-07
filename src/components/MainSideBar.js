@@ -25,22 +25,26 @@ const Meeting = styled.div`
 
 const MainSideBar = props => {
   const { meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
-  const MeetingList = meetingList.map((meeting, i) => (
-    <Link to={`/myMeeting?meetingId=${meeting._id}`} key={i}>
-      <Meeting>
-        <p>{meeting.title}</p>
-        <p>
-          [Host]
-          {meeting.memberList[0][0]}
-        </p>
-        <p>
-          (
-          {`${moment(meeting.startTime).format('LLL')} ~ ${moment(meeting.endTime).format('LT')}`}
-          )
-        </p>
-      </Meeting>
-    </Link>
-  ));
+
+  let MeetingList;
+  if (meetingList) {
+    MeetingList = meetingList.map((meeting, i) => (
+      <Link to={`/myMeeting?meetingId=${meeting._id}`} key={i}>
+        <Meeting>
+          <p>{meeting.title}</p>
+          <p>
+            [Host]
+            {meeting.memberList[0][0]}
+          </p>
+          <p>
+            (
+            {`${moment(meeting.startTime).format('LLL')} ~ ${moment(meeting.endTime).format('LT')}`}
+            )
+          </p>
+        </Meeting>
+      </Link>
+    ));
+  }
 
   return (
     <Main-nav>

@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
 import React from 'react';
+import dotenv from 'dotenv';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -13,6 +13,7 @@ import rootReducer from './reducers/index';
 import AppContainer from './containers/AppContainer';
 
 dotenv.config();
+
 const middleware = [];
 const persistConfig = {
   key: 'root',

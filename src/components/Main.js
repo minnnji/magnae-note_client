@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+// import electron from 'electron';
+// import Store from 'electron-store';
+import { exeSync } from 'child_process';
 import styled from 'styled-components';
+// import fs from 'fs';
 import { BigButton } from './Items/Button';
 import Input from './Items/Input';
 
@@ -7,10 +11,20 @@ const Wrapper = styled.div`
   margin: 4em;
 `;
 
+// const store = new Store();
+// const { app } = electron.remote;
+
 const Main = props => {
   const { mode, user_id, name, dispatch, createNewMeetingApi, joinMeetingApi, history } = props;
   const [title, setTitle] = useState('');
   const [password, setPassword] = useState('');
+
+  // useEffect(() => {
+  //   if (!fs.existSync(`${app.getPath('documents')}/magnaeNote`)) {
+  //     exeSync('mkdir /magnaeNote', { cwd: app.getPath('documents') });
+  //     store.set('default-path', `${app.getPath('documents')}/magnaeNote`);
+  //   }
+  // }, []);
 
   return (
     <main>

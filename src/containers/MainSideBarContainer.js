@@ -10,14 +10,14 @@ const MainSideBarContainer = props => {
   const user_id = useSelector(state => state.user._id);
   const [meetingList, setMeetingList] = useState([]);
 
-  useEffect(() => {
-    if (user_id) {
-      (async () => {
-        const userInfo = await getUserApi(user_id);
-        setMeetingList(userInfo.myMeetings);
-      })();
-    }
-  }, [user_id]);
+  // useEffect(() => {
+  //   if (user_id) {
+  //     (async () => {
+  //       const userInfo = await getUserApi(user_id);
+  //       setMeetingList(userInfo.myMeetings);
+  //     })();
+  //   }
+  // }, [user_id]);
 
   return (
     <>

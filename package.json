@@ -4,21 +4,6 @@
   "main": "public/electron.js",
   "private": true,
   "homepage": "./",
-  "build": {
-    "appId": "com.magnae-note.mnapp",
-    "productName": "magnae-note",
-    "copyright": "Copyright © 2020 MJ",
-    "mac": {
-      "category": "public.app-category.utilities"
-    },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
   "dependencies": {
     "axios": "^0.19.2",
     "child_process": "^1.0.2",
@@ -46,9 +31,9 @@
     "watson-speech": "^0.38.0"
   },
   "scripts": {
-    "react-start": "react-scripts start",
-    "start": "rescripts start",
-    "test": "rescripts test",
+    "start": "react-scripts start",
+    "rescripts-start": "rescripts start",
+    "rescripts-test": "rescripts test",
     "rescripts-build": "rescripts build",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",

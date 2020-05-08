@@ -38,7 +38,7 @@ export const handleLogout = async dispatch => {
 
 export const getUserApi = async userId => {
   try {
-    const response = await axios.get(process.env.REACT_APP_SERVER_USER + userId);
+    const response = await axios.get(`https://localhost:4000/api/users/${userId}`);
     return response.data.userById;
   } catch (err) {
     console.log(err);
@@ -48,7 +48,7 @@ export const getUserApi = async userId => {
 
 export const updateUserApi = async (userId, meetingId) => {
   try {
-    await axios.put(process.env.REACT_APP_SERVER_USER + userId, {
+    await axios.put(`https://localhost:4000/api/users/${userId}`, {
       meetingId
     });
   } catch (err) {
@@ -58,7 +58,7 @@ export const updateUserApi = async (userId, meetingId) => {
 };
 
 export const createNewMeetingApi = async (title, password, user_id, name, dispatch) => {
-  const newMeeting = await axios.post(process.env.REACT_APP_SERVER_MEETING,
+  const newMeeting = await axios.post('https://localhost:4000/api/meetings',
     { title,
       password,
       creator: user_id });
@@ -68,8 +68,8 @@ export const createNewMeetingApi = async (title, password, user_id, name, dispat
 
 export const getMeetingApi = async meetingId => {
   try {
-    const response = await axios.get(process.env.REACT_APP_SERVER_MEETING + meetingId);
-    console.log(response.data);
+    const response = await axios.get(`https://localhost:4000/api/meetings/${meetingId}`);
+    // const response = await axios.get(process.env.REACT_APP_SERVER_MEETING + meetingId);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -79,7 +79,7 @@ export const getMeetingApi = async meetingId => {
 
 export const joinMeetingApi = async (title, password, name, dispatch) => {
   try {
-    const meetingRes = await axios.post(`${process.env.REACT_APP_SERVER_MEETING}/validation`, {
+    const meetingRes = await axios.post('https://localhost:4000/api/meetings/validation', {
       title, password });
     dispatch(joinMeeting(meetingRes.data.meetingInfo, name));
     return meetingRes.data.meetingInfo;
@@ -91,7 +91,7 @@ export const joinMeetingApi = async (title, password, name, dispatch) => {
 
 export const updateMeetingApi = async (meetingId, startTime, endTime, memberList) => {
   try {
-    await axios.put(process.env.REACT_APP_SERVER_MEETING + meetingId, {
+    await axios.put(`https://localhost:4000/api/meetings/${meetingId}`, {
       startTime, endTime, memberList
     });
   } catch (err) {

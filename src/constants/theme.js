@@ -1,6 +1,7 @@
 const theme = {
   COLOR_WHITE: '#ffffff',
   COLOR_BLUE: '#3EA6FF',
+  COLOR_BLUE2: '#227093',
   COLOR_GRAY: '#909090',
   BG_COLOR_1: '#909090',
   BG_COLOR_2: '#565656',

@@ -2,15 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { BigBlueFilledButton } from './Items/Button';
 
-const Wrapper = styled.div`
-  margin: 1em;
-  padding: 1em 0;
-`;
-
-const ScriptWrapper = styled.div`
-  margin: 2em;
-`;
-
 const Script = props => {
   const { isHost, callerId, text, subText, handleStart, handleStop } = props;
   return (
@@ -25,5 +16,14 @@ const Script = props => {
     </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  margin: 1em;
+  padding: 1em 0;
+`;
+
+const ScriptWrapper = styled.div`
+  margin: 2em;
+`;
 
 export default Script;

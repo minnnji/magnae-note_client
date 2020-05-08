@@ -4,33 +4,6 @@ import theme from '../constants/theme';
 import { BigButton } from './Items/Button';
 import Script from './Script';
 
-const Container = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const NoVideo = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 1em;
-  padding: 1em;
-  height: 62vh;
-  background-color: ${theme.BG_COLOR_3};
-  border-radius: .5em;
-  color: ${theme.COLOR_WHITE};
-  text-align: center;
-  line-height: 2em;
-  font-size: 1.5em;
-`;
-
-const Video = styled.video`
-  width: -webkit-fill-available;
-  margin: 1.5em;
-  border-radius: .5em;
-`;
-
 const Meeting = props => {
   const {
     mySocket,
@@ -114,5 +87,33 @@ const Meeting = props => {
     </Meeting-main>
   );
 };
+
+
+const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const NoVideo = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 1em;
+  padding: 1em;
+  height: 62vh;
+  background-color: ${theme.BG_COLOR_3};
+  border-radius: .5em;
+  color: ${theme.COLOR_WHITE};
+  text-align: center;
+  line-height: 2em;
+  font-size: 1.5em;
+`;
+
+const Video = styled.video`
+  width: -webkit-fill-available;
+  margin: 1.5em;
+  border-radius: .5em;
+`;
 
 export default Meeting;

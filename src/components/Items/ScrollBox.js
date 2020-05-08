@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ScrollBox = ({ children }) => (
-    <Wrapper>
-      {children}
-    </Wrapper>
-  );
+  <Wrapper>
+    {children}
+  </Wrapper>
+);
 
 const Wrapper = styled.div`
   width: 100%;

@@ -7,10 +7,6 @@ import styled from 'styled-components';
 import { BigButton } from './Items/Button';
 import Input from './Items/Input';
 
-const Wrapper = styled.div`
-  margin: 4em;
-`;
-
 // TO DO
 // const store = new Store();
 // const { app } = electron.remote;
@@ -31,11 +27,11 @@ const Main = props => {
   return (
     <main>
       <Wrapper>
-        <h2>
+        <h1>
           {mode === 'host'
             ? '새 회의실 만들기'
             : '회의 참여하기'}
-        </h2>
+        </h1>
         <Input
           placeholder="회의실 이름"
           defaultValue={title}
@@ -69,5 +65,9 @@ const Main = props => {
     </main>
   );
 };
+
+const Wrapper = styled.div`
+  margin: 4em;
+`;
 
 export default Main;

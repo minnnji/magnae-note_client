@@ -14,8 +14,8 @@ const GlobalStyle = createGlobalStyle`
 
   #root {
     display: grid;
-    grid-template-rows: 50px 100vh;
-    grid-template-columns: minmax(250px, 3fr) 9fr;
+    grid-template-rows: 50px calc(100vh - 50px);
+    grid-template-columns: 320px 1fr;
     grid-template-areas: "header header"
                         "nav    main"
                         "nav    main";
@@ -41,7 +41,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   main {
+    box-sizing: border-box;
     grid-area: main;
+    padding: 35px;
     background-color: ${theme.BG_COLOR_5};
   }
 

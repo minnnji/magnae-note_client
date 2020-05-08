@@ -1,10 +1,6 @@
 import React, { memo, useRef } from 'react';
 import styled from 'styled-components';
 
-const Video = styled.video`
-  width: 100%;
-`;
-
 const MeetingSideBar = props => {
   const {
     stream,
@@ -24,7 +20,6 @@ const MeetingSideBar = props => {
     <Meeting-nav>
       <div>
         <div>
-          내 영상
           <Video playsInline muted ref={userVideo} autoPlay />
         </div>
       </div>
@@ -39,5 +34,9 @@ const MeetingSideBar = props => {
     </Meeting-nav>
   );
 };
+
+const Video = styled.video`
+  width: 100%;
+`;
 
 export default memo(MeetingSideBar);

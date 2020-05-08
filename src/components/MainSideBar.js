@@ -6,23 +6,6 @@ import { BigButton, BigBlueFilledButton } from './Items/Button';
 import ScrollBox from './Items/ScrollBox';
 import theme from '../constants/theme';
 
-const SideBarTop = styled.div`
-  margin: 1.5em 0;
-  text-align: center;
-`;
-
-const SideBarBottom = styled.div`
-  margin: 1em 1.5em;
-  height: 27em;
-  float: right;
-`;
-
-const Meeting = styled.div`
-  margin: 1em 0;
-  padding: 1em 0;
-  border-bottom: 1px dotted ${theme.COLOR_WHITE};
-`;
-
 const MainSideBar = props => {
   const { meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
 
@@ -75,5 +58,22 @@ const MainSideBar = props => {
     </Main-nav>
   );
 };
+
+const SideBarTop = styled.div`
+  margin: 1.5em 0;
+  text-align: center;
+`;
+
+const SideBarBottom = styled.div`
+  margin: 1em 1.5em;
+  height: 27em;
+  float: right;
+`;
+
+const Meeting = styled.div`
+  margin: 1em 0;
+  padding: 1em 0;
+  border-bottom: 1px dotted ${theme.COLOR_WHITE};
+`;
 
 export default MainSideBar;

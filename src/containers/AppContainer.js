@@ -9,7 +9,7 @@ const AppContainer = props => (
   <>
     <GlobalStyle />
     <Switch>
-      <Route exact path="/" render={props => <HomeContainer {...props} />} />
+      <Route exact path="/" component={HomeContainer} />
       <Route path="/meeting" component={MeetingContainer} />
       <Route path="/myMeeting" component={DetailContainer} />
       <Route render={() => <Redirect to="/" />} />

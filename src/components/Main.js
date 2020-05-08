@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   margin: 4em;
 `;
 
+// TO DO
 // const store = new Store();
 // const { app } = electron.remote;
 
@@ -19,6 +20,7 @@ const Main = props => {
   const [title, setTitle] = useState('');
   const [password, setPassword] = useState('');
 
+  // TO DO
   // useEffect(() => {
   //   if (!fs.existSync(`${app.getPath('documents')}/magnaeNote`)) {
   //     exeSync('mkdir /magnaeNote', { cwd: app.getPath('documents') });
@@ -61,7 +63,6 @@ const Main = props => {
             }}
             >
               들어가기
-
             </BigButton>
           )}
       </Wrapper>

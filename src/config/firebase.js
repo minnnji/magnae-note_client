@@ -1,19 +1,9 @@
-// export default {
-//   apiKey: process.env.APIKEY,
-//   authDomain: 're-meeting.firebaseapp.com',
-//   databaseURL: process.env.DATABASEURL,
-//   projectId: 're-meeting',
-//   storageBucket: 're-meeting.appspot.com',
-//   messagingSenderId: process.env.SENDERID,
-//   appId: process.env.APPID
-// };
-
 export default {
-  apiKey: 'AIzaSyBMh9vEFuSP-j8C8iWGTD5Pv8GKRmsACqE',
-  authDomain: 're-meeting.firebaseapp.com',
-  databaseURL: 'https://re-meeting.firebaseio.com',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
   projectId: 're-meeting',
-  storageBucket: 're-meeting.appspot.com',
-  messagingSenderId: '856046291906',
-  appId: '1:856046291906:web:458571de01de430f53645b'
+  storageBucket: process.env.REACT_APP_FIREBASE_STOARAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_ID
 };

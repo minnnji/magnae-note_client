@@ -19,8 +19,8 @@ function MeetingContainer(props) {
 
   const mode = useSelector(state => state.mode.mode);
   const user = useSelector(state => state.user);
-  const { startTime } = useSelector(state => state.meeting);
-  const { myStream: stream } = useSelector(state => state.meeting);
+  const meetingInfo = useSelector(state => state.meeting);
+  const { startTime, myStream: stream } = meetingInfo;
   const dispatch = useDispatch();
 
   // webRTC
@@ -73,6 +73,7 @@ function MeetingContainer(props) {
 
     if (isHost) {
       socket.emit('createRoom', user.name, roomId);
+      setMemberList([user.name, roomId]);
     } else {
       socket.emit('joinRoom', user.name, roomId);
     }
@@ -321,6 +322,7 @@ function MeetingContainer(props) {
         download([scriptJson], 'json.txt', 'text/plain');
       }
     }
+    history.push(`/myMeeting?meetingId=${meetingId}`);
   }, [mediaRecorder, micStream]);
 
   if (receivingStop) {
@@ -356,16 +358,16 @@ function MeetingContainer(props) {
     <>
       <HeaderContainer history={history} />
       <MeetingSideBar
+        meetingInfo={meetingInfo}
         stream={stream}
-        recordedVideo={recordedVideo}
-        handlePlayRecordedVideo={handlePlayRecordedVideo} // 추후 상세페이지로 이동
-        handleDownLoadVideo={handleDownLoadVideo}
+        isMediaRecorder={isMediaRecorder}
       />
       <Meeting
         mySocket={mySocket}
         isHost={isHost}
         sendingCall={sendingCall}
         receivingCall={receivingCall}
+        isMediaRecorder={isMediaRecorder}
         callerId={callerId}
         callerName={callerName}
         memberList={memberList}

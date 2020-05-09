@@ -35,7 +35,7 @@ const GlobalStyle = createGlobalStyle`
 
   Meeting-nav {
     display: grid;
-    grid-template-rows: 15em;
+    grid-template-rows: 14em;
     grid-area: nav;
     background-color: ${theme.BG_COLOR_3};
   }

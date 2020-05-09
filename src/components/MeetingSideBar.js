@@ -1,14 +1,13 @@
 import React, { memo, useRef } from 'react';
 import styled from 'styled-components';
+import voiceRecogImg from '../lib/voiceRecogImg.gif';
 
 const MeetingSideBar = props => {
   const {
     stream,
-    handleStart,
-    handleStop,
-    recordedVideo,
-    handlePlayRecordedVideo,
-    handleDownLoadVideo
+    meetingInfo,
+    isMediaRecorder
+
   } = props;
   const userVideo = useRef();
 
@@ -19,23 +18,36 @@ const MeetingSideBar = props => {
   return (
     <Meeting-nav>
       <div>
-        <div>
-          <Video playsInline muted ref={userVideo} autoPlay />
-        </div>
+        <Video playsInline muted ref={userVideo} autoPlay />
       </div>
-      <button type="button" onClick={handleStart}>회의 시작</button>
-      <button type="button" onClick={handleStop}>회의 종료</button>
-      <button type="button" onClick={handlePlayRecordedVideo}>회의 다시보기</button>
-      <button type="button" onClick={handleDownLoadVideo}>회의 다운로드</button>
-      <Video playsInline ref={recordedVideo} autoPlay />
-      <div>
-        미팅 상세정보
-      </div>
+      <MeetingInfo>
+        <MeetingTitle>{meetingInfo.title}</MeetingTitle>
+        <br />
+        <h3>
+          회의 주최자 :
+          {' '}
+          {meetingInfo.creator}
+        </h3>
+      </MeetingInfo>
+      <Img isMediaRecorder={isMediaRecorder} src={voiceRecogImg} alt="in progress" />
     </Meeting-nav>
   );
 };
 
 const Video = styled.video`
+  width: 100%;
+`;
+
+const MeetingInfo = styled.div`
+  margin: 0 20px;
+`;
+
+const MeetingTitle = styled.h2`
+  margint-bottom: 10px;
+`;
+
+const Img = styled.img`
+  display: ${props => (props.isMediaRecorder ? 'block' : 'none')};
   width: 100%;
 `;
 

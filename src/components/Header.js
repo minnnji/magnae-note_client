@@ -9,7 +9,7 @@ const Header = props => {
 
   return (
     <header>
-      <Link to="/"><Title>Re-Meetting</Title></Link>
+      <Link to="/"><Title>Magnae-Note</Title></Link>
       <HeaderRight>
         <HeaderSubText>
           {

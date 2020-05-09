@@ -22,6 +22,7 @@ const MainSideBarContainer = props => {
   return (
     <>
       <MainSideBar
+        isLogin={user_id}
         meetingList={meetingList}
         setModeHost={setModeHost}
         setModeGuest={setModeGuest}

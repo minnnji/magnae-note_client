@@ -7,7 +7,7 @@ import ScrollBox from './Items/ScrollBox';
 import theme from '../constants/theme';
 
 const MainSideBar = props => {
-  const { meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
+  const { isLogin, meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
 
   let MeetingList;
   if (meetingList) {
@@ -53,7 +53,10 @@ const MainSideBar = props => {
       </SideBarTop>
       <SideBarBottom>
         <h2>나의 회의록</h2>
-        {meetingList && <ScrollBox>{MeetingList}</ScrollBox>}
+        {!isLogin ? <NoMeeting>로그인 후 이용이 가능합니다.</NoMeeting>
+          : meetingList.length
+            ? <ScrollBox>{MeetingList}</ScrollBox>
+            : <NoMeeting>저장된 회의록이 없습니다.</NoMeeting> }
       </SideBarBottom>
     </Main-nav>
   );
@@ -74,6 +77,10 @@ const Meeting = styled.div`
   margin: 1em 0;
   padding: 1em 0;
   border-bottom: 1px dotted ${theme.COLOR_WHITE};
+`;
+
+const NoMeeting = styled.h4`
+  margin: 2em 0;
 `;
 
 export default MainSideBar;

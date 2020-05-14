@@ -109,7 +109,9 @@ const NoVideo = styled.div`
 `;
 
 const Script = styled.p`
+  margin-bottom: 10px;
   cursor: pointer;
+  word-break: keep-all;
   :hover {
     color: ${theme.COLOR_BLUE};
   }

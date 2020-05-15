@@ -1,22 +1,21 @@
 # Magnae-note
 
-[https://www.magnae-note.com/](https://www.magnae-note.com/)
+[https://www.magnae-note.com/](https://www.magnae-note.com/)   
+개발기간) 2020.04.27. ~ 2020.05.08.   
 
 화상회의를 진행하는 동안 음성 인식을 통해 회의록을 자동으로 작성해 주고,   
 작성된 회의록을 선택하여 녹화된 회의 영상을 손쉽게 되돌려 볼 수 있도록 Time travel 기능을 제공하는 웹 애플리케이션입니다.
 
-// gif 추가예정
+![magnae-note_minji](./src/assets/magnae-note_minji.gif)
+[Youtube에서 보기 >](https://youtu.be/oFHqaTct5LU)
 
-회사에서 회의를 할 때 다양한 이슈들이 많은 사람들에 의해 오고 가는데, 기억하기 어려울뿐더러 기록하는 것에도 한계가 있음을 느낀 적이 많았습니다.
-음성 메모로 녹음을 해본 적도 있지만 다시 들어봐야 하는 번거로움이 컸습니다.   
-이런 불편을 해소해보고자 **음성인식으로 회의록을 대신 작성**해 주고, 음원 서비스의 구간 탐색 기능과 같이 자유자재로 영상을 돌려볼 수 있도록 **Time travel 기능**을 구현해보았습니다.
+회사에서 회의를 할 때 다양한 이슈들이 많은 사람들에 의해 오고 가는데, 기억하기 어려울뿐더러 기록하는 것에도 한계가 있음을 느낀 적이 많았습니다. 음성 메모로 녹음을 해본 적도 있지만 다시 들어봐야 하는 번거로움이 컸습니다.   
 
-회의 영상과 회의록 파일은 보안 및 용량 문제로 사용자 로컬에 저장하며, 상세페이지에서 파일 첨부 후 Time travel 기능을 사용할 수 있습니다.   
-**데스크탑 애플리케이션(Electron)**으로 이용 시 정해진 경로에서 파일이 관리되어, 사용자의 별도 파일 첨부 과정 없이 보다 간편하게 회의 내용을 활용할 수 있습니다.
+이런 불편을 해소해보고자 **음성인식으로 회의록을 대신 작성**해 주고, 음원 서비스의 구간 탐색 기능과 같이 자유자재로 영상을 돌려볼 수 있도록 **Time travel 기능**을 구현해보았습니다. 실제로 사용한다면 회의 내용을 쉽게 리마인드할 수 있으며 증거자료가 필요할 때도 유용하겠다는 기대감으로 재미있게 개발하였습니다.   
 
-## Period
+회의 영상과 회의록 파일은 보안 및 용량 이슈로 사용자 로컬에 저장하며, 상세페이지에서 파일첨부 후 Time travel 기능을 사용할 수 있습니다.   
+**데스크탑 애플리케이션(Electron)** 으로 이용 시 정해진 경로에서 파일이 관리되어, 사용자의 별도 파일 첨부 과정 없이 보다 간편하게 회의 내용을 활용할 수 있습니다.
 
-- 2020.04.27. ~ 2020.05.08.
 
 ## Features
 
@@ -82,9 +81,15 @@ $ yarn start (or npm start)
 ## ETC
 
 - Web, Server의 독립적인 관리를 위한 GIT Repo 구분
-- Moqups를 활용한 Wireframe & UI Prototyping
-- Lucidchart를 활용한 Schema design
-- Notion To do를 이용한 Task 및 스케쥴 관리
+- Moqups를 활용한 Wireframe & UI Prototyping   
+<img src="./src/assets/mockup1.png" width="60%">
+<img src="./src/assets/mockup2.png" width="60%">
+<img src="./src/assets/mockup3.png" width="60%">
+- Lucidchart를 활용한 Schema design   
+<img src="./src/assets/schema.png" width="60%">
+- Notion To do를 이용한 Task 및 스케쥴 관리   
+
+[notion에서 보기 >](https://www.notion.so/minnnji2326/20fb2f15583d4571855040c1dad2d2ce?v=1099d5eed542425d912b3354529c3f94)
 
 
 ## Challenges
@@ -99,6 +104,7 @@ $ yarn start (or npm start)
 - Electron 로그인 관련 오류 해결
 - 회의실, 회의록 삭제 기능
 - 회의 재시작 기능
+- 그룹회의 기능
 - 버그 수정
 - Unit test, End To End(E2E) Test
 - Code Refactoring

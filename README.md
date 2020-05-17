@@ -19,7 +19,6 @@
 
 ## Features
 
-- Firebase 인증 SDK를 통한 Github 로그인
 - JSON Web Token Authentication
 - 비밀번호 인증으로 회의실 생성 및 참여
 - WebRTC, Socket.io를 통한 화상 회의 및 녹화
@@ -58,7 +57,6 @@ $ yarn start (or npm start)
 - Styled Components를 통한 리액트 컴포넌트 스타일링
 - Redux를 활용한 Flux 아키텍처 기반 설계
 - Electron, Electron-store를 통한 데스크탑 애플리케이션 구현
-- Firebase Authentication
 - WebRTC
 - Socket.io
 - Watson Speech to Text

@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 import styled from 'styled-components';
-import voiceRecogImg from '../lib/voiceRecogImg.gif';
+import voiceRecogImg from '../assets/voiceRecogImg.gif';
 
 const MeetingSideBar = props => {
   const {

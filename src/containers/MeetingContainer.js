@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import recognizeMic from 'watson-speech/speech-to-text/recognize-microphone';
 import queryString from 'query-string';
-import { updateMeetingApi, updateUserApi } from '../lib/api';
+import { updateMeetingApi, updateUserApi } from '../api';
 import HeaderContainer from './HeaderContainer';
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';

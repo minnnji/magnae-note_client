@@ -66,12 +66,12 @@ const GlobalStyle = createGlobalStyle`
 
   a, a:link, a:visited {
     margin: 0 1rem;
-    color: ${theme.GLOBAL_FONT_COLOR};
+    color: ${theme.COLOR_WHITE};
     text-decoration: none;
   }
 
   a:hover {
-    // color: ${theme.HIGHLIGHT_COLOR};
+    color: ${theme.COLOR_BLUE};
     transition: all 0.3s;
   }
 `;

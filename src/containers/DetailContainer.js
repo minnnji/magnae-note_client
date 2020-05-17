@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import queryString from 'query-string';
-import { getMeetingApi } from '../lib/api';
+import { getMeetingApi } from '../api';
 import HeaderContainer from './HeaderContainer';
 import MainSideBarContainer from './MainSideBarContainer';
 import Detail from '../components/Detail';

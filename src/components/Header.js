@@ -2,46 +2,40 @@ import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../constants/theme';
-import { GrayButton, BlueButton } from './Items/Button';
+import { GrayButton } from './Items/Button';
 
 const Header = props => {
-  const { handleLogin, handleLogout, dispatch, user, history } = props;
+  const { handleLogout, dispatch, user, history } = props;
 
   return (
     <header>
-      <Link to="/"><Title>Magnae-Note</Title></Link>
-      <HeaderRight>
-        <HeaderSubText>
-          {
-            user && user.isLogin
-              ? (
-                <p>
-                  {user.name}
-                  {' '}
-                  님
-                </p>
-              )
-              : <p>로그인 후 이용해주세요.</p>
-          }
-        </HeaderSubText>
-        {
-          user && user.isLogin
-            ? (
-              <GrayButton
-                grayLine
-                grayText
-                inline
-                onClick={() => {
+      { user && user.isLogin ? <Link to="/"><Title>Magnae-Note</Title></Link> : <Title>Magnae-Note</Title>}
+      { user && user.isLogin
+        && (
+          <HeaderRight>
+            <HeaderSubText>
+              <p>
+                {user.name}
+                {' '}
+                님
+              </p>
+            </HeaderSubText>
+            <GrayButton
+              grayLine
+              grayText
+              inline
+              onClick={() => {
+                const isLogout = window.confirm('로그아웃 하시겠습니까?');
+                if (isLogout) {
+                  history.push('/login');
                   handleLogout(dispatch);
-                  history.push('/');
-                }}
-              >
-                Logout
-              </GrayButton>
-            )
-            : <BlueButton inline onClick={() => handleLogin(dispatch)}>로그인</BlueButton>
-        }
-      </HeaderRight>
+                }
+              }}
+            >
+              Logout
+            </GrayButton>
+          </HeaderRight>
+        )}
     </header>
   );
 };

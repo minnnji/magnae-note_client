@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
-import { handleLogin, handleLogout } from '../lib/api';
+import { handleLogout } from '../api';
 
 const HeaderContainer = props => {
   const { history } = props;
@@ -12,7 +12,6 @@ const HeaderContainer = props => {
     <Header
       history={history}
       user={user}
-      handleLogin={handleLogin}
       handleLogout={handleLogout}
       dispatch={dispatch}
     />

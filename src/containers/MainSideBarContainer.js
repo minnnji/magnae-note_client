@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModeHost, setModeGuest } from '../actions/index';
-import { getUserApi } from '../lib/api';
+import { getUserApi } from '../api';
 import MainSideBar from '../components/MainSideBar';
 
 const MainSideBarContainer = props => {
@@ -13,8 +13,8 @@ const MainSideBarContainer = props => {
   useEffect(() => {
     if (user_id) {
       (async () => {
-        const userInfo = await getUserApi(user_id);
-        setMeetingList(userInfo.myMeetings);
+        const { myMeetings } = await getUserApi(user_id, history);
+        setMeetingList(myMeetings);
       })();
     }
   }, [user_id]);

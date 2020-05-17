@@ -17,9 +17,9 @@ const DetailContainer = props => {
   useEffect(() => {
     (async () => {
       const resMeeting = await getMeetingApi(meetingId);
-      console.log(resMeeting.meetingInfo);
       setMeetingInfo(resMeeting.meetingInfo);
     })();
+    return setMeetingInfo({});
   }, [meetingId]);
 
   function setVideoFile(event) {

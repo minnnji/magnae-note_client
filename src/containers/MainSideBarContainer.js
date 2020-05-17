@@ -13,8 +13,12 @@ const MainSideBarContainer = props => {
   useEffect(() => {
     if (user_id) {
       (async () => {
-        const { myMeetings } = await getUserApi(user_id, history);
-        setMeetingList(myMeetings);
+        try {
+          const { myMeetings } = await getUserApi(user_id, history);
+          setMeetingList(myMeetings);
+        } catch (err) {
+          console.log(err);
+        }
       })();
     }
   }, [user_id]);

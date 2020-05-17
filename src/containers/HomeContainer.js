@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderContainer from './HeaderContainer';
 import MainSideBarContainer from './MainSideBarContainer';
@@ -11,6 +11,11 @@ const HomeContainer = props => {
   const user_id = useSelector(state => state.user._id);
   const name = useSelector(state => state.user.name);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const isLogin = localStorage.getItem('user');
+    if (!isLogin) history.push('/login');
+  }, []);
 
   return (
     <>

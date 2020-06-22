@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { getMeetingApi } from '../api';
-import HeaderContainer from './HeaderContainer';
+
 import MainSideBarContainer from './MainSideBarContainer';
 import Detail from '../components/Detail';
 
@@ -44,7 +44,6 @@ const DetailContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history} />
       <MainSideBarContainer history={history} detail />
       <Detail
         isVideo={isVideo}

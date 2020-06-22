@@ -17,8 +17,8 @@ const Login = props => (
 
 const Img = styled.img`
   position: relative;
-  width: 1050px;
-  height: fit-content;
+  width: 100%;
+  height: 100%;
 `;
 
 const Title = styled.h1`

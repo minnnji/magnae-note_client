@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { receiveMyStream, receiveStartTime, receiveEndTime, receiveMember } from '../actions/index';
+import messages from '../constants/messages';
+import { updateMeetingApi, updateUserApi } from '../api';
+
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import recognizeMic from 'watson-speech/speech-to-text/recognize-microphone';
 import queryString from 'query-string';
-import { updateMeetingApi, updateUserApi } from '../api';
-import HeaderContainer from './HeaderContainer';
+
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';
-import messages from '../constants/messages';
-import { receiveMyStream, receiveStartTime, receiveEndTime, receiveMember } from '../actions/index';
 
 const scripts = [];
 
@@ -356,7 +357,6 @@ function MeetingContainer(props) {
 
   return (
     <>
-      <HeaderContainer history={history} />
       <MeetingSideBar
         meetingInfo={meetingInfo}
         stream={stream}

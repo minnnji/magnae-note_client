@@ -31,7 +31,7 @@ export const requestLogin = async (userId, password) => {
   }
 };
 
-export const handleLogout = async dispatch => {
+export const requestLogout = async dispatch => {
   localStorage.setItem('user', '');
   dispatch(deleteUser());
 };

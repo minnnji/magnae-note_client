@@ -1,49 +1,21 @@
 import React from 'react';
-import dotenv from 'dotenv';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { createLogger } from 'redux-logger';
-import thunk from 'redux-thunk';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import rootReducer from './reducers/index';
-import AppContainer from './containers/AppContainer';
+import store from './store';
 
-dotenv.config();
-
-const middleware = [];
-const persistConfig = {
-  key: 'root',
-  storage,
-  blacklist: [
-    'meeting'
-  ]
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-if (process.env.NODE_ENV !== 'production') {
-  middleware.push(createLogger());
-  middleware.push(thunk);
-}
-
-const store = createStore(
-  persistedReducer,
-  applyMiddleware(...middleware)
-);
+import App from './App';
 
 const persistor = persistStore(store);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <HashRouter>
-        <AppContainer />
-      </HashRouter>
-    </PersistGate>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import homeImg from '../assets/homeImg.gif';
 
-const Login = props => (
+const Login = () => (
   <main>
     <div>
       <Img src={homeImg} alt="home image" />
@@ -17,8 +17,8 @@ const Login = props => (
 
 const Img = styled.img`
   position: relative;
-  width: 1050px;
-  height: fit-content;
+  width: 100%;
+  height: 100%;
 `;
 
 const Title = styled.h1`

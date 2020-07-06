@@ -16,7 +16,7 @@ const MeetingSideBar = props => {
   }
 
   return (
-    <Meeting-nav>
+    <nav>
       <div>
         <Video playsInline muted ref={userVideo} autoPlay />
       </div>
@@ -30,12 +30,13 @@ const MeetingSideBar = props => {
         </h3>
       </MeetingInfo>
       <Img isMediaRecorder={isMediaRecorder} src={voiceRecogImg} alt="in progress" />
-    </Meeting-nav>
+    </nav>
   );
 };
 
 const Video = styled.video`
   width: 100%;
+  height: -webkit-fill-available;
 `;
 
 const MeetingInfo = styled.div`
@@ -43,7 +44,7 @@ const MeetingInfo = styled.div`
 `;
 
 const MeetingTitle = styled.h2`
-  margint-bottom: 10px;
+  margin-bottom: 10px;
 `;
 
 const Img = styled.img`

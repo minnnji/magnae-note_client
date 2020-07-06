@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModeHost, setModeGuest } from '../actions/index';
 import { getUserApi } from '../api';
+
 import MainSideBar from '../components/MainSideBar';
 
 const MainSideBarContainer = props => {

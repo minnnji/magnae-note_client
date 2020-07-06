@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { requestLogin } from '../api';
 import { getUser } from '../actions/index';
-import HeaderContainer from './HeaderContainer';
+import { requestLogin } from '../api';
+
 import LoginSideBar from '../components/LoginSideBar';
 import Login from '../components/Login';
 
@@ -24,7 +24,6 @@ const LoginContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history} />
       <LoginSideBar handleLogin={handleLogin} />
       <Login />
     </>

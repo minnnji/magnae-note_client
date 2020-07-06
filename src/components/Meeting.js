@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../constants/theme';
-import { BigButton } from './Items/Button';
+import { BigButton } from './layout/Button';
 import Script from './Script';
 
 const Meeting = props => {

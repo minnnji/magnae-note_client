@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import HeaderContainer from './HeaderContainer';
+import { createNewMeetingApi, joinMeetingApi } from '../api';
+
 import MainSideBarContainer from './MainSideBarContainer';
 import Main from '../components/Main';
-import { createNewMeetingApi, joinMeetingApi } from '../api';
 
 const HomeContainer = props => {
   const { history } = props;
@@ -19,7 +19,6 @@ const HomeContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history} />
       <MainSideBarContainer history={history} />
       <Main
         mode={mode}

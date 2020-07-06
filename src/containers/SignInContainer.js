@@ -1,6 +1,6 @@
 import React from 'react';
 import { requestSignin } from '../api';
-import HeaderContainer from './HeaderContainer';
+
 import SignInSideBar from '../components/SignInSideBar';
 import Login from '../components/Login';
 
@@ -16,7 +16,6 @@ const SignInContainer = props => {
 
   return (
     <>
-      <HeaderContainer history={history} />
       <SignInSideBar handleSignin={handleSignin} />
       <Login />
     </>

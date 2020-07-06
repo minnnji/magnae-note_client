@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { exeSync } from 'child_process';
 import styled from 'styled-components';
 // import fs from 'fs';
-import { BigButton } from './Items/Button';
-import Input from './Items/Input';
+import { BigButton } from './layout/Button';
+import Input from './layout/Input';
 
 // TO DO
 // const store = new Store();

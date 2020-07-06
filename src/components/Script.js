@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../constants/theme';
-import { BigBlueFilledButton } from './Items/Button';
+import { BigBlueFilledButton } from './layout/Button';
 
 const Script = props => {
   const { isHost, isMediaRecorder, callerId, text, subText, handleStart, handleStop } = props;

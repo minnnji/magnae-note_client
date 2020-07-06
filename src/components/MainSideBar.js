@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import moment from 'moment';
-import { BigButton, BigBlueFilledButton } from './Items/Button';
-import ScrollBox from './Items/ScrollBox';
 import theme from '../constants/theme';
+import moment from 'moment';
+
+import Sidebar from './layout/Sidebar';
+import { BigButton, BigBlueFilledButton } from './layout/Button';
+import ScrollBox from './layout/ScrollBox';
 
 const MainSideBar = props => {
   const { isLogin, meetingList, setModeHost, setModeGuest, dispatch, detail, history } = props;
@@ -29,49 +31,37 @@ const MainSideBar = props => {
     ));
   }
 
+  const topContent =
+    <>
+      <BigBlueFilledButton
+        onClick={() => {
+          dispatch(setModeHost());
+          if (detail) history.push('/');
+        }}
+      >
+        새 회의실 만들기
+      </BigBlueFilledButton>
+      <BigButton
+        onClick={() => {
+          dispatch(setModeGuest());
+          if (detail) history.push('/');
+        }}
+      >
+        회의 참여하기
+      </BigButton>
+    </>
+  ;
+
   return (
-    <Main-nav>
-      <SideBarTop>
-        <BigBlueFilledButton
-          inline
-          onClick={() => {
-            dispatch(setModeHost());
-            if (detail) history.push('/');
-          }}
-        >
-          새 회의실 만들기
-        </BigBlueFilledButton>
-        <BigButton
-          inline
-          onClick={() => {
-            dispatch(setModeGuest());
-            if (detail) history.push('/');
-          }}
-        >
-          회의 참여하기
-        </BigButton>
-      </SideBarTop>
-      <SideBarBottom>
-        <h2>나의 회의록</h2>
-        {!isLogin ? <NoMeeting>로그인 후 이용이 가능합니다.</NoMeeting>
-          : meetingList.length
-            ? <ScrollBox>{MeetingList}</ScrollBox>
-            : <NoMeeting>저장된 회의록이 없습니다.</NoMeeting> }
-      </SideBarBottom>
-    </Main-nav>
+    <Sidebar topContent={topContent}>
+      <h2>나의 회의록</h2>
+      {!isLogin ? <NoMeeting>로그인 후 이용이 가능합니다.</NoMeeting>
+        : meetingList.length
+          ? <ScrollBox>{MeetingList}</ScrollBox>
+          : <NoMeeting>저장된 회의록이 없습니다.</NoMeeting> }
+    </Sidebar>
   );
 };
-
-const SideBarTop = styled.div`
-  margin: 1.5em 0;
-  text-align: center;
-`;
-
-const SideBarBottom = styled.div`
-  margin: 1em 1.5em;
-  height: 27em;
-  float: right;
-`;
 
 const Meeting = styled.div`
   margin: 1em 0;

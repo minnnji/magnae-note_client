@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import homeImg from '../assets/homeImg.gif';
 
-const Login = props => (
+const Login = () => (
   <main>
     <div>
       <Img src={homeImg} alt="home image" />

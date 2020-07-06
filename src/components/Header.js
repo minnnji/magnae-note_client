@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../constants/theme';
-import { GrayButton } from './Items/Button';
+import { GrayButton } from './layout/Button';
 
 const Header = props => {
   const { isLogin, name, handleLogout } = props;

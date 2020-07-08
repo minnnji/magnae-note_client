@@ -15,11 +15,12 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "react/prop-types": 0, // 지우기
-    "camelcase": 0, // 지우기
-    "no-console": 0, // 지우기
-    "no-unused-vars": 0, // 지우기
+    "react/prop-types": 0,
+    "camelcase": 0,
+    "no-console": 0,
+    "no-unused-vars": 0,
     "no-nested-ternary": 0,
+    "jsx-quotes": [2, "prefer-single"],
     "no-extraneous-dependencies": 0,
     "no-static-element-interactions": 0,
     "no-undef": 0,
@@ -36,22 +37,10 @@
     "no-use-before-define": 0,
     "react/jsx-props-no-spreading": 0,
     "one-var": 0,
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "comma-dangle": [
-      "error",
-      "never"
-    ],
+    "arrow-parens": ["error", "as-needed"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "comma-dangle": ["error", "never"],
     "indent": [
       "error",
       2,

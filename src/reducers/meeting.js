@@ -7,7 +7,19 @@ const initialState = {
   startTime: '',
   endTime: '',
   myStream: '',
-  memberList: []
+  isSendCall: false,
+  isReceiveCall: false,
+  isAcceptCall: false,
+  isMeetingStart: false,
+  isMeetingStop: false,
+  isMeetingRecord: false,
+  memberList: [],
+  peerInfo: {
+    id: '',
+    name: '',
+    signal: null,
+    stream: null
+  }
 };
 
 const meeting = (state = initialState, action) => {
@@ -26,6 +38,51 @@ const meeting = (state = initialState, action) => {
         title: action.title,
         creator: action.creator
       };
+    case types.RECEIVE_MEETING_CALL:
+      return {
+        ...state,
+        isReceiveCall: action.status
+      };
+    case types.SENDING_MEETING_CALL:
+      return {
+        ...state,
+        isSendCall: action.status
+      };
+    case types.ACCEPTING_MEETING_CALL:
+      return {
+        ...state,
+        isAcceptCall: action.status
+      };
+    case types.RECEIVE_MEETING_CALLER_INFO:
+      return {
+        ...state,
+        peerInfo: {
+          ...state.peerInfo,
+          id: action.data.fromId,
+          name: action.data.fromName,
+          signal: action.data.signal
+        }
+      };
+    case types.RECEIVE_MEETING_CALLER_STREAM:
+      return {
+        ...state,
+        peerInfo: { ...state.peerInfo, stream: action.stream }
+      };
+    case types.UPDATE_MEETING_START:
+      return {
+        ...state,
+        isMeetingStart: true
+      };
+    case types.UPDATE_MEETING_STOP:
+      return {
+        ...state,
+        isMeetingStop: true
+      };
+    case types.UPDATE_MEETING_RECORDER:
+      return {
+        ...state,
+        isMeetingRecord: action.status
+      };
     case types.RECEIVE_MEETING_STARTTIME:
       return {
         ...state,
@@ -36,7 +93,7 @@ const meeting = (state = initialState, action) => {
         ...state,
         endTime: action.endTime
       };
-    case types.RECEIVE_MEETING_MEMBER:
+    case types.UPDATE_MEETING_MEMBER:
       return {
         ...state,
         memberList: action.memberList
@@ -46,7 +103,8 @@ const meeting = (state = initialState, action) => {
         ...state,
         myStream: action.stream
       };
-    default: return state;
+    default:
+      return state;
   }
 };
 

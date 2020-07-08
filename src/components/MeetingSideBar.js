@@ -3,16 +3,11 @@ import styled from 'styled-components';
 import voiceRecogImg from '../assets/voiceRecogImg.gif';
 
 const MeetingSideBar = props => {
-  const {
-    stream,
-    meetingInfo,
-    isMediaRecorder
-
-  } = props;
+  const { myStream, meetingInfo, isMediaRecorder } = props;
   const userVideo = useRef();
 
-  if (userVideo.current && stream) {
-    userVideo.current.srcObject = stream;
+  if (userVideo.current && myStream) {
+    userVideo.current.srcObject = myStream;
   }
 
   return (
@@ -23,13 +18,13 @@ const MeetingSideBar = props => {
       <MeetingInfo>
         <MeetingTitle>{meetingInfo.title}</MeetingTitle>
         <br />
-        <h3>
-          회의 주최자 :
-          {' '}
-          {meetingInfo.creator}
-        </h3>
+        <h3>회의 주최자 : {meetingInfo.creator}</h3>
       </MeetingInfo>
-      <Img isMediaRecorder={isMediaRecorder} src={voiceRecogImg} alt="in progress" />
+      <Img
+        isMediaRecorder={isMediaRecorder}
+        src={voiceRecogImg}
+        alt='in progress'
+      />
     </nav>
   );
 };

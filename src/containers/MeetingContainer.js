@@ -1,13 +1,39 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { receiveMyStream, receiveStartTime, receiveEndTime, receiveMember } from '../actions/index';
+import queryString from 'query-string';
+
+import recognizeMic from 'watson-speech/speech-to-text/recognize-microphone';
+import {
+  connectSocket,
+  createRoom,
+  joinRoom,
+  sendCallToPeer,
+  acceptCallToPeer,
+  callPeerToStart,
+  callPeerToEnd
+} from '../lib/socket';
+import getMediaDevices from '../lib/webRTC';
+
+import {
+  receiveMyStream,
+  receiveStartTime,
+  receiveEndTime,
+  receiveMember
+} from '../actions/index';
+
+import {
+  onUpdateMember,
+  onReceiveCall,
+  onStartMeeting,
+  onStopMeeting,
+  sendingCall,
+  acceptingCall,
+  receivingPeerStream,
+  setStreamRecorder
+} from '../actions/meeting.actions';
+
 import messages from '../constants/messages';
 import { updateMeetingApi, updateUserApi } from '../api';
-
-import io from 'socket.io-client';
-import Peer from 'simple-peer';
-import recognizeMic from 'watson-speech/speech-to-text/recognize-microphone';
-import queryString from 'query-string';
 
 import MeetingSideBar from '../components/MeetingSideBar';
 import Meeting from '../components/Meeting';
@@ -16,151 +42,37 @@ const scripts = [];
 
 function MeetingContainer(props) {
   const { history, location } = props;
-  const { meetingId } = queryString.parse(location.search);
 
   const mode = useSelector(state => state.mode.mode);
   const user = useSelector(state => state.user);
   const meetingInfo = useSelector(state => state.meeting);
-  const { startTime, myStream: stream } = meetingInfo;
   const dispatch = useDispatch();
 
-  // webRTC
-  const [mySocket, setMySocket] = useState({});
-  const [sendingCall, setSendingCall] = useState(false);
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [callAccepted, setCallAccepted] = useState(false);
-  const [callerId, setCallerId] = useState('');
-  const [callerName, setCallerName] = useState('');
-  const [callerSignal, setCallerSignal] = useState();
-  const [receivingStop, setReceivingStop] = useState(false);
-  const [memberList, setMemberList] = useState([]);
-
-  const userVideo = useRef();
-  const partnerVideo = useRef();
-  const recordedVideo = useRef(); // 추후 상세페이지로 이동
-
+  const { meetingId } = queryString.parse(location.search);
+  const roomId = meetingId;
   const isHost = mode === 'host';
+  const { startTime, myStream, memberList, isMeetingRecord } = meetingInfo;
 
+  // webRTC
   useEffect(() => {
-    const socket = io.connect(process.env.REACT_APP_SERVER_SOCKET);
-    setMySocket(socket);
-
-    navigator.getWebcam = (navigator.getUserMedia
-      || navigator.webKitGetUserMedia
-      || navigator.moxGetUserMedia
-      || navigator.mozGetUserMedia
-      || navigator.msGetUserMedia);
-
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-        .then(myStream => {
-          dispatch(receiveMyStream(myStream));
-          if (userVideo.current) {
-            userVideo.current.srcObject = myStream;
-          }
-        })
-        .catch(e => { console.log(`${e.name}: ${e.message}`); });
-    } else {
-      navigator.getWebcam({ audio: true, video: true },
-        myStream => {
-          if (userVideo.current) {
-            userVideo.current.srcObject = myStream;
-          }
-        },
-        () => { console.log('Web cam is not accessible.'); });
-    }
-
-    const roomId = meetingId;
-
+    connectSocket();
     if (isHost) {
-      socket.emit('createRoom', user.name, roomId);
-      setMemberList([user.name, roomId]);
+      createRoom(user.name, roomId);
     } else {
-      socket.emit('joinRoom', user.name, roomId);
+      joinRoom(user.name, roomId);
     }
-
-    socket.on('thisRoomUsers', userList => {
-      setMemberList(userList);
-    });
-
-    socket.on('hey', data => {
-      setReceivingCall(true);
-      setSendingCall(false);
-      setCallerId(data.fromId);
-      setCallerName(data.fromName);
-      setCallerSignal(data.signal);
-    });
-
-    socket.on('startMeeting', () => {
-      handleStart();
-    });
-
-    socket.on('endMeeting', () => {
-      setReceivingStop(true);
-    });
   }, []);
 
-  function callPeerToStart(mySocket, peerSocketId) {
-    mySocket.emit('callUserToStart', {
-      userToCall: peerSocketId,
-      fromId: mySocket.id
-    });
-  }
+  useEffect(() => {
+    getMediaDevices(receiveMyStream, dispatch);
+  }, []);
 
-  function callPeerToEnd(mySocket, peerSocketId) {
-    mySocket.emit('callUserToEnd', {
-      userToCall: peerSocketId,
-      fromId: mySocket.id
-    });
-  }
-
-  function callPeer(mySocket, peerSocketId) {
-    const myPeer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream
-    });
-
-    myPeer.on('signal', data => {
-      mySocket.emit('callUser', {
-        userToCall: peerSocketId,
-        signalData: data,
-        fromId: mySocket.id,
-        fromName: user.name });
-      setSendingCall(true);
-    });
-
-    myPeer.on('stream', stream => {
-      if (partnerVideo.current) {
-        partnerVideo.current.srcObject = stream;
-      }
-    });
-
-    mySocket.on('callAccepted', signal => {
-      setCallAccepted(true);
-      myPeer.signal(signal);
-    });
-  }
-
-  function acceptCall() {
-    setCallAccepted(true);
-    const partnerPeer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream
-    });
-    partnerPeer.on('signal', data => {
-      mySocket.emit('acceptCall', {
-        signal: data,
-        to: callerId });
-    });
-
-    partnerPeer.on('stream', stream => {
-      partnerVideo.current.srcObject = stream;
-    });
-
-    partnerPeer.signal(callerSignal);
-  }
+  useEffect(() => {
+    onUpdateMember(dispatch);
+    onReceiveCall(dispatch);
+    onStartMeeting(handleStart, dispatch);
+    onStopMeeting(handleStop, dispatch);
+  }, []);
 
   // watson-speech-to-text
   const [text, setText] = useState('');
@@ -169,13 +81,16 @@ function MeetingContainer(props) {
 
   const onListenClick = useCallback(() => {
     fetch(process.env.REACT_APP_WATSON)
-      .then(response => response.json()).then(token => {
-        const micListener = recognizeMic(Object.assign(token, {
-          model: 'ko-KR_BroadbandModel',
-          objectMode: true,
-          format: true,
-          timestamps: true
-        }));
+      .then(response => response.json())
+      .then(token => {
+        const micListener = recognizeMic(
+          Object.assign(token, {
+            model: 'ko-KR_BroadbandModel',
+            objectMode: true,
+            format: true,
+            timestamps: true
+          })
+        );
         setMicStream(micListener);
 
         let script = '';
@@ -201,7 +116,8 @@ function MeetingContainer(props) {
         micListener.on('error', err => {
           console.log(err);
         });
-      }).catch(error => {
+      })
+      .catch(error => {
         console.log(error);
       });
   }, [scripts]);
@@ -209,8 +125,7 @@ function MeetingContainer(props) {
   // record
   const mediaSource = new MediaSource();
   mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
-  const [isMediaRecorder, setIsMediaRecorder] = useState(false);
-  const recordedBlobs = useMemo(() => isMediaRecorder && [], [isMediaRecorder]);
+  const recordedBlobs = useMemo(() => isMeetingRecord && [], [isMeetingRecord]);
   let sourceBuffer;
 
   function handleSourceOpen(event) {
@@ -244,7 +159,7 @@ function MeetingContainer(props) {
     }
 
     try {
-      const recorder = new MediaRecorder(stream, options);
+      const recorder = new MediaRecorder(myStream, options);
       return recorder;
     } catch (e) {
       console.error('Exception while creating MediaRecorder:', e);
@@ -252,7 +167,10 @@ function MeetingContainer(props) {
     }
   };
 
-  const mediaRecorder = useMemo(() => isMediaRecorder && createMediaRecorder(), [isMediaRecorder]);
+  const mediaRecorder = useMemo(
+    () => isMeetingRecord && createMediaRecorder(),
+    [isMeetingRecord]
+  );
 
   useEffect(() => {
     if (mediaRecorder) {
@@ -267,7 +185,6 @@ function MeetingContainer(props) {
     }
   }, [mediaRecorder]);
 
-  // handling function
   const download = (content, fileName, contentType, cb) => {
     const file = new Blob(content, { type: contentType });
     const url = window.URL.createObjectURL(file);
@@ -281,102 +198,97 @@ function MeetingContainer(props) {
     }
   };
 
-  const handleStart = useCallback(async partnerSocketId => {
-    if (isHost) {
-      await callPeerToStart(mySocket, partnerSocketId);
-    }
-    setIsMediaRecorder(false);
-    setIsMediaRecorder(true);
-    onListenClick();
-    dispatch(receiveStartTime(new Date()));
-  }, [stream]);
+  const handleStart = useCallback(
+    async partnerSocketId => {
+      if (isHost) {
+        await callPeerToStart(partnerSocketId);
+      }
+      setStreamRecorder(dispatch, false);
+      setStreamRecorder(dispatch, true);
+      // onListenClick();
+      dispatch(receiveStartTime(new Date()));
+    },
+    [myStream]
+  );
 
-  const handleStop = useCallback(async partnerSocketId => {
-    if (isHost) {
-      await callPeerToEnd(mySocket, partnerSocketId);
-    }
+  const handleStop = useCallback(
+    async partnerSocketId => {
+      if (isHost) {
+        await callPeerToEnd(partnerSocketId);
+      }
 
-    if (mediaRecorder.state === 'recording') {
-      await mediaRecorder.stop();
-      await micStream.stop();
-    }
-    const endTime = new Date();
-    dispatch(receiveEndTime(endTime));
-    dispatch(receiveMember(memberList));
+      if (mediaRecorder.state === 'recording') {
+        await mediaRecorder.stop();
+        await micStream.stop();
+      }
+      const endTime = new Date();
+      dispatch(receiveEndTime(endTime));
+      dispatch(receiveMember(memberList));
 
-    await updateMeetingApi(meetingId, startTime, endTime, memberList);
-    await updateUserApi(user._id, meetingId);
+      await updateMeetingApi(meetingId, startTime, endTime, memberList);
+      await updateUserApi(user._id, meetingId);
 
-    const isVideoDown = window.confirm(messages.whetherToVideoDown);
-    if (isVideoDown) {
-      download(recordedBlobs, 'test.webm', 'video/mp4', () => {
+      const isVideoDown = window.confirm(messages.whetherToVideoDown);
+      if (isVideoDown) {
+        download(recordedBlobs, 'test.webm', 'video/mp4', () => {
+          const isScriptDown = window.confirm(messages.whetherToScriptDown);
+          if (isScriptDown) {
+            const scriptJson = JSON.stringify({ scripts });
+            download([scriptJson], 'json.txt', 'text/plain');
+          }
+        });
+      } else {
         const isScriptDown = window.confirm(messages.whetherToScriptDown);
         if (isScriptDown) {
           const scriptJson = JSON.stringify({ scripts });
           download([scriptJson], 'json.txt', 'text/plain');
         }
-      });
-    } else {
-      const isScriptDown = window.confirm(messages.whetherToScriptDown);
-      if (isScriptDown) {
-        const scriptJson = JSON.stringify({ scripts });
-        download([scriptJson], 'json.txt', 'text/plain');
       }
-    }
-    history.push(`/myMeeting?meetingId=${meetingId}`);
-  }, [mediaRecorder, micStream]);
+      history.push(`/myMeeting?meetingId=${meetingId}`);
+    },
+    [mediaRecorder, micStream]
+  );
 
-  if (receivingStop) {
-    handleStop();
-    setReceivingStop(false);
-  }
+  const handleCallPeer = () => {
+    const peerSocketId = meetingInfo.memberList[0][1];
+    sendCallToPeer(
+      myStream,
+      user.name,
+      peerSocketId,
+      sendingCall,
+      acceptingCall,
+      receivingPeerStream,
+      dispatch
+    );
+  };
 
-  const handlePlayRecordedVideo = useCallback(() => {
-    const superBuffer = new Blob(recordedBlobs, { type: 'video/mp4' });
-    recordedVideo.current.src = null;
-    recordedVideo.current.srcObject = null;
-    recordedVideo.current.src = window.URL.createObjectURL(superBuffer);
-    recordedVideo.current.controls = true;
-    recordedVideo.current.play();
-  }, [recordedBlobs]);
-
-  const handleDownLoadVideo = useCallback(() => {
-    const blob = new Blob(recordedBlobs, { type: 'video/mp4' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = 'test.webm';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 100);
-  }, [recordedBlobs]);
+  const handleAcceptPeer = () => {
+    acceptCallToPeer(
+      myStream,
+      meetingInfo.peerInfo.id,
+      meetingInfo.peerInfo.signal,
+      acceptingCall,
+      receivingPeerStream,
+      dispatch
+    );
+  };
 
   return (
     <>
       <MeetingSideBar
         meetingInfo={meetingInfo}
-        stream={stream}
-        isMediaRecorder={isMediaRecorder}
+        myStream={myStream}
+        isMeetingRecord={isMeetingRecord}
       />
       <Meeting
-        mySocket={mySocket}
         isHost={isHost}
-        sendingCall={sendingCall}
-        receivingCall={receivingCall}
-        isMediaRecorder={isMediaRecorder}
-        callerId={callerId}
-        callerName={callerName}
+        meetingInfo={meetingInfo}
         memberList={memberList}
-        partnerVideo={partnerVideo}
-        callAccepted={callAccepted}
-        acceptCall={acceptCall}
-        callPeer={callPeer}
         text={text}
         subText={subText}
+        handleCallPeer={handleCallPeer}
+        handleAcceptPeer={handleAcceptPeer}
+        isMeetingRecord={isMeetingRecord}
         handleStart={handleStart}
         handleStop={handleStop}
       />

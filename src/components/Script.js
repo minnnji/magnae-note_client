@@ -4,20 +4,39 @@ import theme from '../constants/theme';
 import { BigBlueFilledButton } from './layout/Button';
 
 const Script = props => {
-  const { isHost, isMediaRecorder, callerId, text, subText, handleStart, handleStop } = props;
+  const {
+    isHost,
+    isMeetingRecord,
+    peerSocketId,
+    text,
+    subText,
+    handleStart,
+    handleStop
+  } = props;
+
   return (
     <Wrapper>
-      {isHost && !isMediaRecorder && <BigBlueFilledButton onClick={() => handleStart(callerId)}>회의 시작</BigBlueFilledButton>}
-      {isHost && isMediaRecorder && <BigBlueFilledButton onClick={() => handleStop(callerId)}>회의 종료</BigBlueFilledButton>}
-      {!isHost && <BigBlueFilledButton onClick={handleStop}>퇴장하기</BigBlueFilledButton>}
-      {isMediaRecorder || (
+      {isHost && !isMeetingRecord && (
+        <BigBlueFilledButton onClick={() => handleStart(peerSocketId)}>
+          회의 시작
+        </BigBlueFilledButton>
+      )}
+      {isHost && isMeetingRecord && (
+        <BigBlueFilledButton onClick={() => handleStop(peerSocketId)}>
+          회의 종료
+        </BigBlueFilledButton>
+      )}
+      {!isHost && (
+        <BigBlueFilledButton onClick={handleStop}>퇴장하기</BigBlueFilledButton>
+      )}
+      {isMeetingRecord || (
         <Notice>
           회의가 시작되면 음성이 인식되어
           <br />
           회의 내용이 자동 기록됩니다.
         </Notice>
       )}
-      {isMediaRecorder && <Notice>회의가 시작되었습니다.</Notice>}
+      {isMeetingRecord && <Notice>회의가 시작되었습니다.</Notice>}
       <ScriptWrapper>
         <div>{text}</div>
         <div>{subText}</div>
